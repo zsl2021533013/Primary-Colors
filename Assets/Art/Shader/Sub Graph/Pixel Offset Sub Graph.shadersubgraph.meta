@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: f1ab32e4a93c6c34caa2a5d984fa5f73
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: pixel offset sub graph_shadersubgraph
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 60072b568d64c40a485e0fc55012dc9f, type: 3}

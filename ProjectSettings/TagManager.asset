@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags: []
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - Player
+  - Player Black
+  - Ground
+  - Black
+  - Spike
+  - Target
+  - Collectible
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 1212398995
+    locked: 0
+  - name: Spike
+    uniqueID: 1070279623
+    locked: 0
+  - name: Tile
+    uniqueID: 2411935161
+    locked: 0
+  - name: Target
+    uniqueID: 1048493935
+    locked: 0
+  - name: Notice
+    uniqueID: 3511082123
+    locked: 0
+  - name: Player
+    uniqueID: 2382081823
+    locked: 0
