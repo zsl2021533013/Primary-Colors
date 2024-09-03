@@ -1,6 +1,6 @@
 ﻿using DG.Tweening;
+using GameMain.Script.Controller.Scene_System;
 using QFramework;
-using Script.View_Controller.Scene_System;
 using UnityEngine;
 
 namespace Script.Command

@@ -1,7 +1,7 @@
 ﻿using GameMain.Script.Consts;
+using GameMain.Script.Controller;
 using GameMain.Scripts.Utility;
 using QFramework;
-using Script.View_Controller;
 using UnityEngine;
 
 namespace Script.Command

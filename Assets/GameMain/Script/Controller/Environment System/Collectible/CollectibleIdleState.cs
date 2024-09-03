@@ -1,4 +1,4 @@
-﻿namespace Script.View_Controller.Environment_System
+﻿namespace GameMain.Script.Controller.Environment_System.Collectible
 {
     public class CollectibleIdleState
     {

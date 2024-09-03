@@ -1,9 +1,9 @@
-﻿using QFramework;
+﻿using GameMain.Script.Controller.Interface;
+using QFramework;
 using Script.Architecture;
-using Script.View_Controller.Interface;
 using UnityEngine;
 
-namespace Script.View_Controller
+namespace GameMain.Script.Controller
 {
     public class ControllerBase : MonoBehaviour, IPrimaryColorsController, IController
     {

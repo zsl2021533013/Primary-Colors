@@ -1,11 +1,9 @@
-﻿using System;
-using QFramework;
+﻿using QFramework;
 using Script.Architecture;
 using UniRx;
 using UnityEngine;
-using UnityEngine.Serialization;
 
-namespace Script.View_Controller
+namespace GameMain.Script.Controller
 {
     public class ParallaxController : MonoBehaviour, IController
     {

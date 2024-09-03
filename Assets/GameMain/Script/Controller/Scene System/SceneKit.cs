@@ -3,9 +3,8 @@ using DG.Tweening;
 using QFramework;
 using QFramework.Example;
 using Script.Architecture;
-using UnityEngine;
 
-namespace Script.View_Controller.Scene_System
+namespace GameMain.Script.Controller.Scene_System
 {
     public class SceneKit : Singleton<SceneKit>
     {

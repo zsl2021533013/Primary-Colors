@@ -3,7 +3,7 @@ using QFramework;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Script.View_Controller.Input_System
+namespace GameMain.Script.Controller.Input_System
 {
     public interface IInputProperty<T>
     {

@@ -15,7 +15,7 @@ namespace GameMain.Scripts.Procedure
         Launch,
         ChangeScene,
         Menu,
-        Main
+        Game
     }
     
     public class ProcedureMain : MonoBehaviour
@@ -32,7 +32,7 @@ namespace GameMain.Scripts.Procedure
             FSM.AddState(ProcedureStates.Launch, new LaunchState(FSM, this));
             FSM.AddState(ProcedureStates.ChangeScene, new ChangeSceneState(FSM, this));
             FSM.AddState(ProcedureStates.Menu, new MenuState(FSM, this));
-            FSM.AddState(ProcedureStates.Main, new GameState(FSM, this));
+            FSM.AddState(ProcedureStates.Game, new GameState(FSM, this));
 
             FSM.StartState(ProcedureStates.Launch);
         }
@@ -77,6 +77,7 @@ namespace GameMain.Scripts.Procedure
         
         private AsyncOperation asyncOperation;
         private SceneChangePanel panel;
+        private bool isFadingIn;
         
         public ChangeSceneState(FSM<ProcedureStates> fsm, ProcedureMain target) : base(fsm, target)
         {
@@ -87,6 +88,7 @@ namespace GameMain.Scripts.Procedure
             base.OnEnter();
 
             asyncOperation = null;
+            isFadingIn = false;
 
             if (panel == null)
             {
@@ -102,10 +104,10 @@ namespace GameMain.Scripts.Procedure
         {
             base.OnUpdate();
 
-            if (asyncOperation is not null && asyncOperation.isDone && !panel.IsFading)
+            if (asyncOperation is not null && asyncOperation.isDone && !isFadingIn)
             {
-                panel.FadeIn(null);
-                mFSM.ChangeState(nextState);
+                isFadingIn = true;
+                panel.FadeIn(() => mFSM.ChangeState(nextState));
             }
         }
     } 
@@ -125,7 +127,7 @@ namespace GameMain.Scripts.Procedure
             panel = UIKit.OpenPanel<MenuPanel>();
             panel.startGameBtn.onClick.AddListener(() =>
             {
-                ChangeSceneState.nextState = ProcedureStates.Main;
+                ChangeSceneState.nextState = ProcedureStates.Game;
                 ChangeSceneState.nextScenePath = PathManager.GetLevelAsset("1-1");
                 mFSM.ChangeState(ProcedureStates.ChangeScene);
             });

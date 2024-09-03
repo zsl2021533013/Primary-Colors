@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using QFramework;
 using Script.Architecture;
-using Script.View_Controller.Scene_System;
 
 namespace QFramework.Example
 {

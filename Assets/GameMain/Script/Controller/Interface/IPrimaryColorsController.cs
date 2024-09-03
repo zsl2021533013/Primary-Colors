@@ -1,4 +1,4 @@
-﻿namespace Script.View_Controller.Interface
+﻿namespace GameMain.Script.Controller.Interface
 {
     public interface IPrimaryColorsController
     {

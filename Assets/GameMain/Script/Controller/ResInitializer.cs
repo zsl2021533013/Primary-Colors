@@ -1,9 +1,8 @@
-﻿using System;
-using QFramework;
+﻿using QFramework;
 using Script.Architecture;
 using UnityEngine;
 
-namespace Script.View_Controller
+namespace GameMain.Script.Controller
 {
     public class ResInitializer : MonoBehaviour, IController
     {

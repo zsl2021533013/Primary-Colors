@@ -2,22 +2,8 @@
 {
     public class PrimaryColorsAsset
     {
-        #region Gravity
-
-        public const float Gravity = 9.8f;
-        public const float GravityScale = 4f;
-        public const float MaxFallSpeed = 14f;
-        public const float SpikeSensorDelay = 2f;
-        public const float TargetSensorDelay = 2f;
-        public const float CollectibleSensorDelay = 2f;
-        public const float JumpGravityFactor = 1f;
-        public const float FallGravityFactor = 1.4f;
-
-        #endregion
-
         #region Player
 
-        public const float PlayerSpawnOffset = 0.5f;
         public const float ColorChangeDuration = 0.5f;
 
         #endregion

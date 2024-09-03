@@ -1,8 +1,7 @@
 ﻿using GameMain.Script.Consts;
 using QFramework;
-using Script.Architecture;
 
-namespace Script.View_Controller.Interface
+namespace GameMain.Script.Controller.Interface
 {
     public interface IColor
     {

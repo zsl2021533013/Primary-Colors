@@ -1,9 +1,9 @@
-﻿using GameMain.Scripts.Utility;
+﻿using GameMain.Script.Controller;
+using GameMain.Scripts.Utility;
 using QFramework;
 using Script.Architecture;
 using Script.Event;
 using Script.Model;
-using Script.View_Controller;
 using UnityEngine;
 
 namespace Script.Command
@@ -16,7 +16,7 @@ namespace Script.Command
 
             var hit = Physics2D.Raycast(bornPoint.transform.position, Vector2.down);
 
-            var pos = hit.point + PrimaryColorsAsset.PlayerSpawnOffset * Vector2.up;
+            var pos = hit.point + Vector2.up;
             
             var model = this.GetModel<PlayerModel>();
             if (model.Controller == null)
@@ -31,7 +31,7 @@ namespace Script.Command
             this.SendEvent<PlayerRebornEvent>();
             
             model.Transform.position = pos;
-            model.Transform.localScale = Vector3.one;
+            model.Controller.cc2D.warpToGrounded();
         }
     }
 }

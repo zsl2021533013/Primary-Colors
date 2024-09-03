@@ -1,11 +1,11 @@
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
+using GameMain.Script.Controller.Character.HFSM.Base;
+using GameMain.Script.Controller.Character.HFSM.StateMachine;
+using GameMain.Script.Controller.Character.HFSM.States;
+using GameMain.Script.Controller.Character.HFSM.Transitions;
 using QFramework;
-using Script.View_Controller.Character_System.HFSM.Base;
-using Script.View_Controller.Character_System.HFSM.StateMachine;
-using Script.View_Controller.Character_System.HFSM.States;
-using Script.View_Controller.Character_System.HFSM.Transitions;
 using UnityEngine;
 
 namespace Script
@@ -58,9 +58,10 @@ namespace Script
         public static void AddTransition<TState1, TState2>(
             this StateMachine<Type, Type, Type> fsm,
             Func<Transition<Type>, bool> condition = null,
-            bool forceInstantly = false)
+            bool forceInstantly = false,
+            Action successAction = null)
         {
-            fsm.AddTransition(new Transition<Type>(typeof(TState1), typeof(TState2), condition, forceInstantly));
+            fsm.AddTransition(new Transition<Type>(typeof(TState1), typeof(TState2), condition, forceInstantly, successAction));
         }
     }
     

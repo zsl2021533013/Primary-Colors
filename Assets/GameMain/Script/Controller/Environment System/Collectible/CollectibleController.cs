@@ -1,17 +1,16 @@
 using System;
 using DG.Tweening;
+using GameMain.Script.Controller.Character.HFSM.StateMachine;
+using GameMain.Script.Controller.Character.Player.State;
 using QFramework;
+using Script;
 using Script.Architecture;
 using Script.Event;
 using Script.Model;
-using Script.View_Controller.Character_System.HFSM.StateMachine;
-using Script.View_Controller.Character_System.Player.State;
-using Script.View_Controller.Character_System.Player.State.Ground_State;
-using Script.View_Controller.Environment_System.Target;
 using UniRx;
 using UnityEngine;
 
-namespace Script.View_Controller.Environment_System
+namespace GameMain.Script.Controller.Environment_System.Collectible
 {
     public partial class CollectibleController : MonoBehaviour, IController
     {

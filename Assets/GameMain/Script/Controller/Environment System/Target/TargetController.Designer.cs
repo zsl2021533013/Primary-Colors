@@ -1,7 +1,7 @@
-﻿using Script.View_Controller.Scene_System;
+﻿using GameMain.Script.Controller.Scene_System;
 using UnityEngine;
 
-namespace Script.View_Controller.Environment_System.Target
+namespace GameMain.Script.Controller.Environment_System.Target
 {
     public partial class TargetController
     {

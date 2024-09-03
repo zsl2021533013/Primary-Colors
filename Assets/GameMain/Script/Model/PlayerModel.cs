@@ -1,11 +1,10 @@
 ﻿using System;
 using DG.Tweening;
 using GameMain.Script.Consts;
+using GameMain.Script.Controller.Character.Player;
 using QFramework;
 using QFramework.Example;
 using Script.Architecture;
-using Script.View_Controller.Character_System.HFSM.StateMachine;
-using Script.View_Controller.Character_System.Player;
 using UnityEngine;
 
 namespace Script.Model

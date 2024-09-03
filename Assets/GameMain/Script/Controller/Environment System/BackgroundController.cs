@@ -1,10 +1,8 @@
-﻿using System;
-using QFramework;
+﻿using QFramework;
 using Script.Architecture;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
-namespace Script.View_Controller.Environment_System
+namespace GameMain.Script.Controller.Environment_System
 {
     public class BackgroundController : MonoBehaviour, IController
     { 

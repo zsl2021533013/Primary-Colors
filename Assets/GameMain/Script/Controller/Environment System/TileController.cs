@@ -1,16 +1,15 @@
-﻿using System;
-using DG.Tweening;
+﻿using DG.Tweening;
 using GameMain.Script.Consts;
+using GameMain.Script.Controller.Interface;
 using QFramework;
 using Script.Architecture;
 using Script.Event;
 using Script.Model;
-using Script.View_Controller.Interface;
 using UniRx;
 using UnityEngine;
-using Timer = Script.View_Controller.Character_System.HFSM.Util.Timer;
+using Timer = GameMain.Script.Controller.Character.HFSM.Util.Timer;
 
-namespace Script.View_Controller.Environment_System
+namespace GameMain.Script.Controller.Environment_System
 {
     public partial class TileController : MonoBehaviour, IController, IColor
     {

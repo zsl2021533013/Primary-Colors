@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 2983303170101972921}
   m_Layer: 10
   m_Name: Spike Green
-  m_TagString: Untagged
+  m_TagString: Spike
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1738,7 +1738,7 @@ GameObject:
   - component: {fileID: 4087773000333576414}
   m_Layer: 10
   m_Name: Spike Red
-  m_TagString: Untagged
+  m_TagString: Spike
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2122,7 +2122,7 @@ MonoBehaviour:
   m_ShowCameraFrustum: 1
   m_IgnoreTimeScale: 0
   m_WorldUpOverride: {fileID: 0}
-  m_UpdateMethod: 0
+  m_UpdateMethod: 2
   m_BlendUpdateMethod: 1
   m_DefaultBlend:
     m_Style: 1
@@ -2401,9 +2401,9 @@ GameObject:
   - component: {fileID: 4087773000441536039}
   - component: {fileID: 4087773000441536038}
   - component: {fileID: 4087773000441536057}
-  m_Layer: 11
+  m_Layer: 10
   m_Name: Target
-  m_TagString: Untagged
+  m_TagString: Target
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2542,7 +2542,7 @@ GameObject:
   - component: {fileID: 4087773000486608332}
   m_Layer: 10
   m_Name: Spike Yellow
-  m_TagString: Untagged
+  m_TagString: Spike
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3348,7 +3348,7 @@ GameObject:
   - component: {fileID: 4087773001088333899}
   m_Layer: 10
   m_Name: Spike Blue
-  m_TagString: Untagged
+  m_TagString: Spike
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3614,7 +3614,7 @@ GameObject:
   - component: {fileID: 4087773001185720447}
   m_Layer: 10
   m_Name: Spike White
-  m_TagString: Untagged
+  m_TagString: Spike
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4273,7 +4273,7 @@ GameObject:
   - component: {fileID: 4372360197370064016}
   m_Layer: 10
   m_Name: Spike Orange
-  m_TagString: Untagged
+  m_TagString: Spike
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4539,7 +4539,7 @@ GameObject:
   - component: {fileID: 1632398837185953446}
   m_Layer: 10
   m_Name: Spike Purple
-  m_TagString: Untagged
+  m_TagString: Spike
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4805,7 +4805,7 @@ GameObject:
   - component: {fileID: 7210449489842375146}
   m_Layer: 10
   m_Name: Spike Black
-  m_TagString: Untagged
+  m_TagString: Spike
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

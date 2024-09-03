@@ -1,30 +1,38 @@
 ﻿using System.Collections.Generic;
+using GameMain.Script.Controller.Interface;
 using QFramework;
 using Script.Architecture;
 using Script.Command;
-using Script.View_Controller.Interface;
 using UnityEngine;
 
-namespace Script.View_Controller
+namespace GameMain.Script.Controller
 {
     public class LevelManager : MonoSingleton<LevelManager>, IController, IPrimaryColorsController
     {
-        private List<IPrimaryColorsController> controllers = new List<IPrimaryColorsController>();
+        private List<IPrimaryColorsController> controllers;
+
+        private List<IPrimaryColorsController> addCache;
+        private List<IPrimaryColorsController> removeCache;
         
         private LevelManager() {}
-        
-        public void Initialize()
-        {
-            this.SendCommand<SpawnPlayerCommand>();
-        }
 
         public void OnAwake()
         {
             controllers = new List<IPrimaryColorsController>();
+            addCache = new List<IPrimaryColorsController>();
+            removeCache = new List<IPrimaryColorsController>();
+            
+            this.SendCommand<SpawnPlayerCommand>();
         }
 
         public void OnUpdate(float elapse)
         {
+            addCache.ForEach(controller => controllers.Add(controller));
+            addCache.Clear();
+            
+            removeCache.ForEach(controller => controllers.Remove(controller));
+            removeCache.Clear();
+            
             controllers.ForEach(controller => controller.OnUpdate(elapse));
         }
 
@@ -36,7 +44,14 @@ namespace Script.View_Controller
         public void OnGameShutdown()
         {
             controllers.ForEach(controller => controller.OnGameShutdown());
+            
+            controllers.Clear();
+            addCache.Clear();
+            removeCache.Clear();
+            
             controllers = null;
+            addCache = null;
+            removeCache = null;
         }
 
         public ControllerBase InstantiateController(GameObject mGameObject)
@@ -48,13 +63,16 @@ namespace Script.View_Controller
         {
             var instance = mGameObject.Instantiate(position, rotation);
             var controller = instance.GetComponentInChildren<ControllerBase>();
-            controllers.Add(controller);
+            
+            addCache.Add(controller);
+            controller.OnAwake();
+            
             return controller;
         }
         
         public void DestroyController(ControllerBase controller)
         {
-            controllers.Remove(controller);
+            removeCache.Add(controller);
             controller.gameObject.DestroySelf();
         }
         

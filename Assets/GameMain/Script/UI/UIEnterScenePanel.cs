@@ -1,9 +1,9 @@
 using DG.Tweening;
+using GameMain.Script.Controller.Scene_System;
 using UnityEngine;
 using UnityEngine.UI;
 using QFramework;
 using Script.Architecture;
-using Script.View_Controller.Scene_System;
 
 namespace QFramework.Example
 {

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
+using GameMain.Script.Controller.Environment_System.Collectible;
 using QFramework;
-using Script.View_Controller.Environment_System;
-using Script.View_Controller.Environment_System.Target;
 using UnityEngine;
 
 namespace Script.Model

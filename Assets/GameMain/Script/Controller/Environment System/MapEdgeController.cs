@@ -1,13 +1,11 @@
-﻿using System;
-using GameMain.Script.Consts;
+﻿using GameMain.Script.Consts;
+using GameMain.Script.Controller.Interface;
 using QFramework;
 using Script.Architecture;
-using Script.Command;
 using Script.Model;
-using Script.View_Controller.Interface;
 using UnityEngine;
 
-namespace Script.View_Controller.Environment_System
+namespace GameMain.Script.Controller.Environment_System
 {
     public class MapEdgeController : MonoBehaviour, IController, IColor
     {

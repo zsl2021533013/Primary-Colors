@@ -4,7 +4,6 @@ using UnityEngine.UI;
 using QFramework;
 using Script.Architecture;
 using Script.Command;
-using Script.View_Controller.Scene_System;
 
 namespace QFramework.Example
 {

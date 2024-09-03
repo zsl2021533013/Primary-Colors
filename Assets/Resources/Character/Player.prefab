@@ -379,10 +379,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6917722310419348366}
   - component: {fileID: 6917722310419348361}
-  - component: {fileID: 5612903989428648177}
-  - component: {fileID: 6917722310419348363}
-  - component: {fileID: 6917722310419348362}
+  - component: {fileID: 1054400817991141931}
   - component: {fileID: 7770879497969472181}
+  - component: {fileID: 6917722310419348363}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -430,8 +429,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!61 &5612903989428648177
-BoxCollider2D:
+--- !u!70 &1054400817991141931
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -443,19 +442,32 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.021055698, y: -0.23169422}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.6736374, y: 0.6106348}
-  m_EdgeRadius: 0
+  m_Offset: {x: 0.0144741535, y: -0.22145212}
+  m_Size: {x: 0.43631506, y: 0.6186869}
+  m_Direction: 0
+--- !u!114 &7770879497969472181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6917722310419348357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfdcd66c25e648439c894ff5f11b5d61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _skinWidth: 0.02
+  platformMask:
+    serializedVersion: 2
+    m_Bits: 256
+  triggerMask:
+    serializedVersion: 2
+    m_Bits: 7168
+  totalHorizontalRays: 8
+  totalVerticalRays: 4
+  capsuleCollider: {fileID: 1054400817991141931}
+  rigidBody2D: {fileID: 6917722310419348361}
 --- !u!114 &6917722310419348363
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -470,83 +482,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   config: {fileID: 11400000, guid: 1c892852176f0cb4ca6854ac07fbeca0, type: 2}
   animator: {fileID: 6917722311824865200}
-  sprite: {fileID: 6917722311824865201}
-  rb: {fileID: 6917722310419348361}
-  moveCollider: {fileID: 0}
+  cc2D: {fileID: 7770879497969472181}
   sensorController: {fileID: 6917722311787041834}
---- !u!114 &6917722310419348362
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6917722310419348357}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6a6d26146fd4c3dad05decc87afeb97, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rb: {fileID: 6917722310419348361}
---- !u!114 &7770879497969472181
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6917722310419348357}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cfdcd66c25e648439c894ff5f11b5d61, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ignoreOneWayPlatformsThisFrame: 0
-  _skinWidth: 0.02
-  platformMask:
-    serializedVersion: 2
-    m_Bits: 0
-  triggerMask:
-    serializedVersion: 2
-    m_Bits: 0
-  oneWayPlatformMask:
-    serializedVersion: 2
-    m_Bits: 0
-  slopeLimit: 30
-  jumpingThreshold: 0.07
-  slopeSpeedMultiplier:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: -90
-      value: 1.5
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 90
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  totalHorizontalRays: 8
-  totalVerticalRays: 4
 --- !u!1 &6917722310640307293
 GameObject:
   m_ObjectHideFlags: 0

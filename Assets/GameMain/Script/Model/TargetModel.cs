@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using GameMain.Script.Controller.Character.HFSM.StateMachine;
+using GameMain.Script.Controller.Environment_System.Target;
+using GameMain.Script.Controller.Scene_System;
 using QFramework;
-using Script.View_Controller.Character_System.HFSM.StateMachine;
-using Script.View_Controller.Environment_System.Target;
-using Script.View_Controller.Scene_System;
 using UnityEngine;
 
 namespace Script.Model

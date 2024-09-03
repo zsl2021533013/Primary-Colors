@@ -2,18 +2,23 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using GameMain.Script.Consts;
+using GameMain.Script.Controller;
+using GameMain.Scripts.Utility;
 using QFramework;
 using Script.Architecture;
 using Script.Command;
 using Script.Model;
-using Script.View_Controller;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Test : ControllerBase
 {
-    private void Start()
+    private void Update()
     {
-        Debug.Log(ParticleType.Bounce.ToString());
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            SceneManager.LoadSceneAsync(PathManager.GetLevelAsset("1-2"));
+        }
     }
 }

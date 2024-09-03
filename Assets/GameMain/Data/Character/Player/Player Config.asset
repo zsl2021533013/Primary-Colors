@@ -13,22 +13,22 @@ MonoBehaviour:
   m_Name: Player Config
   m_EditorClassIdentifier: 
   maxSpeed: 8
-  accelerate: 100
   coyoteTime: 0.15
-  jumpForce: 14
-  edgeJumpForce: 6
-  wallJumpForce: 14
+  groundDamping: 20
+  jumpHeight: 2.2
+  edgeJumpHeight: 6
+  wallJumpHeight: 4
   wallJumpAngle: 60
-  superJumpSpeed: 20
+  superJumpHeight: 10
   superJumpTime: 0.05
-  bounceUpForce: 16
-  bounceSideForce: 16
-  orangeBounceUpForce: 18.5
-  orangeBounceSideForce: 16
+  bounceUpHeight: 6
+  bounceSideHeight: 6
+  orangeBounceUpHeight: 8
+  orangeBounceSideHeight: 8
   bounceAngle: 30
   bounceTime: 0.5
   floatSpeed: 2
+  airDamping: 5
   wallClimbOffset: -0.19
   wallClimbSpeed: 6
-  zeroFriction: {fileID: 6200000, guid: cd42ea0877657bf44a5d9fc4fbd53bc2, type: 2}
-  fullFriction: {fileID: 6200000, guid: 476bb883e51736d4fa2b6eaa45380e9f, type: 2}
+  gravity: 25
