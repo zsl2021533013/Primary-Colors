@@ -31,6 +31,7 @@ namespace GameMain.Script.Controller.Character.Player
 		public StateMachine<Type, Type, Type> FSM { get; private set; }
 
 		private bool isLocked;
+		private bool isGravityEnable = true;
 		private Vector2 _velocity;
 		
 		public override void OnAwake()
@@ -143,7 +144,12 @@ namespace GameMain.Script.Controller.Character.Player
 				"Air",
 				onEnter: state =>
 				{
-					_velocity.y = Mathf.Sqrt((2f * config.edgeJumpHeight * config.gravity).Abs());
+					InputKit.Instance.jump.Reset();
+					
+					transform.Flip();
+					
+					_velocity.x = transform.Direction() * config.wallJumpHeight * Mathf.Atan(config.wallJumpAngle * Mathf.Deg2Rad);
+					_velocity.y = Mathf.Sqrt((2f * config.wallJumpHeight * config.gravity).Abs());
 				},
 				canExit: state => state.timer > 0.1f,
 				needsExitTime: true);
@@ -157,7 +163,7 @@ namespace GameMain.Script.Controller.Character.Player
 					
 					transform.Flip();
 					
-					_velocity.x = config.wallJumpHeight * Mathf.Atan(config.wallJumpAngle * Mathf.Deg2Rad);
+					_velocity.x = transform.Direction() * config.wallJumpHeight * Mathf.Atan(config.wallJumpAngle * Mathf.Deg2Rad);
 					_velocity.y = Mathf.Sqrt((2f * config.wallJumpHeight * config.gravity).Abs());
 				},
 				canExit: state => state.timer > 0.1f,
@@ -168,11 +174,10 @@ namespace GameMain.Script.Controller.Character.Player
 				"Super Jump Begin",
 				onEnter: state =>
 				{
-					_velocity.y = Mathf.Sqrt((2f * config.wallJumpHeight * config.gravity).Abs());
+					_velocity.x /= 2;
 				},
 				onExit: state =>
 				{
-					_velocity.x /= 2;
 					_velocity.y = Mathf.Sqrt((2f * config.superJumpHeight * config.gravity).Abs());
 				},
 				canExit: state => state.timer.IsAnimatorFinish,
@@ -302,6 +307,10 @@ namespace GameMain.Script.Controller.Character.Player
 			airFSM.AddState<PlayerFloatState>(
 				animator,
 				"Float",
+				onEnter: state =>
+				{
+					isGravityEnable = false;
+				},
 				onLogic: state =>
 				{
 					var inputX = InputKit.Instance.move.Value.x;
@@ -329,6 +338,10 @@ namespace GameMain.Script.Controller.Character.Player
 						transform.Flip(inputX);
 					}
 				},
+				onExit: state =>
+				{
+					isGravityEnable = true;
+				},
 				canExit: state => state.timer > 0.1f,
 				needsExitTime: true);
 
@@ -354,6 +367,7 @@ namespace GameMain.Script.Controller.Character.Player
 				"Wall",
 				onEnter: state =>
 				{
+					isGravityEnable = false;
 					transform.position =
 						cc2D.raycastHitHorizontal[0].point + 
 						Vector2.right * (config.wallClimbOffset * transform.Direction());
@@ -373,7 +387,10 @@ namespace GameMain.Script.Controller.Character.Player
 					{
 						_velocity = Vector2.zero;
 					}
-					
+				},
+				onExit: state =>
+				{
+					isGravityEnable = true;
 				});
 			
 			FSM.AddState<PlayerShakeState>(
@@ -461,11 +478,11 @@ namespace GameMain.Script.Controller.Character.Player
 						pos = transform.position
 					});
 					
-					this.SendCommand(new SpawnParticleCommand
+					/*this.SendCommand(new SpawnParticleCommand
 					{
 						type = ParticleType.Land, 
 						pos = transform.position
-					});
+					});*/
 					
 					if (cc2D.isGrounded)
 					{
@@ -486,25 +503,30 @@ namespace GameMain.Script.Controller.Character.Player
 				});
 
 			FSM.AddTransition<PlayerAirSubFSM, PlayerWallState>
-			(transition => (transform.Direction() == -1 ? cc2D.collisionState.left : cc2D.collisionState.right) &&
-			               sensorController.edgeSensor &&
-			               !cc2D.isGrounded && 
-			               (this.GetModel<PlayerModel>().PlayerColor.Value == ColorType.Green
-			                || this.GetModel<TileModel>().GetTileColor(cc2D.raycastHitHorizontal[0].transform) == ColorType.Green));
+			(transition =>
+			{
+				return (transform.Direction() == -1 ? cc2D.collisionState.left : cc2D.collisionState.right) &&
+				       sensorController.edgeSensor &&
+				       !cc2D.isGrounded &&
+				       (this.GetModel<PlayerModel>().PlayerColor.Value == ColorType.Green
+				        || this.GetModel<TileModel>().GetTileColor(cc2D.raycastHitHorizontal[0].transform) ==
+				        ColorType.Green);
+			});
 
-			FSM.AddTransition<PlayerWallState, PlayerAirSubFSM>
-				(transition => !cc2D.isGrounded && !(transform.Direction() == -1 ? cc2D.collisionState.left : cc2D.collisionState.right));
+			/*FSM.AddTransition<PlayerWallState, PlayerAirSubFSM>
+				(transition => !cc2D.isGrounded && !(InputKit.Instance.move.Direction() == -1 ? cc2D.collisionState.left : cc2D.collisionState.right));
+				*/
 			
 			FSM.AddTransition<PlayerWallState, PlayerWallJumpState>
-				(transition => InputKit.Instance.jump);
+				(transition => InputKit.Instance.jump || transform.IsOppositeDirection(InputKit.Instance.move.Value.x));
 
 			FSM.AddTransition<PlayerWallState, PlayerEdgeJumpState>
-			(transition => !sensorController.edgeSensor &&
-			               (transform.IsSameDirection(InputKit.Instance.move.Value.x) ||
-			                InputKit.Instance.move.Value.y > 0f));
-			
-			FSM.AddTransition<PlayerWallState, PlayerWallJumpState>
-				(transition => transform.IsOppositeDirection(InputKit.Instance.move.Value.x), true);
+			(transition =>
+			{
+				return !sensorController.edgeSensor &&
+				       (transform.IsSameDirection(InputKit.Instance.move.Value.x) ||
+				        InputKit.Instance.move.Value.y > 0f);
+			});
 
 			FSM.AddTransition<PlayerShakeState, PlayerAirSubFSM>
 				(transition => !cc2D.isGrounded, true);
@@ -572,7 +594,11 @@ namespace GameMain.Script.Controller.Character.Player
 
 			if (!isLocked)
 			{
-				_velocity.y -= config.gravity * elapse;
+				if (isGravityEnable)
+				{
+					_velocity.y -= config.gravity * elapse;
+				}
+				
 				cc2D.move(_velocity * elapse);
 				
 				animator.SetFloat("SpeedX", cc2D.velocity.x.Abs());

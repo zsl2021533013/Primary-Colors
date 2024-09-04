@@ -156,7 +156,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1697217618}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4, y: 2, z: 0}
+  m_LocalPosition: {x: 0, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -281,50 +281,6 @@ Transform:
   m_Father: {fileID: 6917722310419348366}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &5415470935893971254
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3343325291651487898}
-  - component: {fileID: 6565802794163580827}
-  m_Layer: 0
-  m_Name: Spike Sensor
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3343325291651487898
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5415470935893971254}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.19, z: 0}
-  m_LocalScale: {x: 0.4, y: 0.6, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6917722311787041835}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6565802794163580827
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5415470935893971254}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fad1713a251944c0bf4e9bf9a3f47520, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6030640789913940841
 GameObject:
   m_ObjectHideFlags: 0
@@ -355,7 +311,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6917722311787041835}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &99645310009028575
 MonoBehaviour:
@@ -605,7 +561,6 @@ Transform:
   - {fileID: 6917722310640307266}
   - {fileID: 6917722311029663223}
   - {fileID: 1583175623}
-  - {fileID: 3343325291651487898}
   - {fileID: 4047396427588388264}
   m_Father: {fileID: 6917722310419348366}
   m_RootOrder: 1
@@ -622,10 +577,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 664e5c66c7b54363a31724f547b285c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  edgeSensorTransform: {fileID: 1583175623}
   groundSensorTransform: {fileID: 6917722310640307266}
   wallSensorTransform: {fileID: 6917722311029663223}
-  edgeSensorTransform: {fileID: 1583175623}
-  spikeSensorTransform: {fileID: 3343325291651487898}
   orangeSensorTransform: {fileID: 4047396427588388264}
 --- !u!1 &6917722311824865203
 GameObject:

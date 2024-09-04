@@ -190,7 +190,7 @@ namespace GameMain.Script.Controller.Character.Player
 			raycastHitHorizontal.Clear();
 
 			primeRaycastOrigins();
-		
+			
 			// now we check movement in the horizontal dir
 			if( deltaMovement.x != 0f )
 			{
@@ -291,7 +291,7 @@ namespace GameMain.Script.Controller.Character.Player
 			var rayDistance = Mathf.Abs( deltaMovement.x ) + _skinWidth;
 			var rayDirection = isGoingRight ? Vector2.right : -Vector2.right;
 			var initialRayOrigin = isGoingRight ? _raycastOrigins.bottomRight : _raycastOrigins.bottomLeft;
-
+			
 			for( var i = 0; i < totalHorizontalRays; i++ )
 			{
 				var ray = new Vector2( initialRayOrigin.x, initialRayOrigin.y + i * _verticalDistanceBetweenRays );
@@ -332,7 +332,7 @@ namespace GameMain.Script.Controller.Character.Player
 
 			// apply our horizontal deltaMovement here so that we do our raycast from the actual position we would be in if we had moved
 			initialRayOrigin.x += deltaMovement.x;
-
+			
 			// if we are moving up, we should ignore the layers in oneWayPlatformMask
 			var mask = platformMask;
 			for( var i = 0; i < totalVerticalRays; i++ )
@@ -343,10 +343,6 @@ namespace GameMain.Script.Controller.Character.Player
 				
 				if( _raycastHit )
 				{
-					if (deltaMovement == Vector3.down)
-					{
-						Debug.Log(ray);
-					}
 					// set our new deltaMovement and recalculate the rayDistance taking it into account
 					deltaMovement.y = _raycastHit.point.y - ray.y;
 					rayDistance = Mathf.Abs( deltaMovement.y );

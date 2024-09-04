@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 7932483263413207933}
   - component: {fileID: 559066374056552338}
   - component: {fileID: 5869924804449122569}
-  - component: {fileID: 5693547527114413484}
   - component: {fileID: 7282878005984938225}
   - component: {fileID: 2983303170101972921}
+  - component: {fileID: 3062263607192299151}
   m_Layer: 10
   m_Name: Spike Green
   m_TagString: Spike
@@ -211,22 +211,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!19719996 &5693547527114413484
-TilemapCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 254343567882968501}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 1
-  m_Offset: {x: 0, y: 0}
-  m_MaximumTileChangeCount: 1000
-  m_ExtrusionFactor: 0
 --- !u!66 &7282878005984938225
 CompositeCollider2D:
   m_ObjectHideFlags: 0
@@ -244,9 +228,7 @@ CompositeCollider2D:
   m_GeometryType: 0
   m_GenerationType: 0
   m_EdgeRadius: 0
-  m_ColliderPaths:
-  - m_Collider: {fileID: 5693547527114413484}
-    m_ColliderPaths: []
+  m_ColliderPaths: []
   m_CompositePaths:
     m_Paths: []
   m_VertexDistance: 0.0005
@@ -266,6 +248,22 @@ MonoBehaviour:
   color: 8
   tileType: 3
   tilemapRenderer: {fileID: 559066374056552338}
+--- !u!19719996 &3062263607192299151
+TilemapCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 254343567882968501}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_MaximumTileChangeCount: 1000
+  m_ExtrusionFactor: 0
 --- !u!1 &4087772999320462703
 GameObject:
   m_ObjectHideFlags: 0
@@ -276,10 +274,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4087772999320462700}
   - component: {fileID: 4087772999320462698}
-  - component: {fileID: 4087772999320462701}
   m_Layer: 10
   m_Name: Floor
-  m_TagString: Untagged
+  m_TagString: Spike
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -325,18 +322,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 100, y: 2}
   m_EdgeRadius: 0
---- !u!114 &4087772999320462701
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4087772999320462703}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 564c10e1ec6d44658b64fdb16598687e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4087772999367502176
 GameObject:
   m_ObjectHideFlags: 0
@@ -1733,9 +1718,9 @@ GameObject:
   - component: {fileID: 4087773000333576411}
   - component: {fileID: 4087773000333576410}
   - component: {fileID: 4087773000333576412}
-  - component: {fileID: 4536268335199552079}
   - component: {fileID: 4087773000333576415}
   - component: {fileID: 4087773000333576414}
+  - component: {fileID: 850291034059018258}
   m_Layer: 10
   m_Name: Spike Red
   m_TagString: Spike
@@ -1932,22 +1917,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!19719996 &4536268335199552079
-TilemapCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4087773000333576400}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 1
-  m_Offset: {x: 0, y: 0}
-  m_MaximumTileChangeCount: 1000
-  m_ExtrusionFactor: 0
 --- !u!66 &4087773000333576415
 CompositeCollider2D:
   m_ObjectHideFlags: 0
@@ -1965,9 +1934,7 @@ CompositeCollider2D:
   m_GeometryType: 0
   m_GenerationType: 0
   m_EdgeRadius: 0
-  m_ColliderPaths:
-  - m_Collider: {fileID: 4536268335199552079}
-    m_ColliderPaths: []
+  m_ColliderPaths: []
   m_CompositePaths:
     m_Paths: []
   m_VertexDistance: 0.0005
@@ -1987,6 +1954,22 @@ MonoBehaviour:
   color: 3
   tileType: 3
   tilemapRenderer: {fileID: 4087773000333576410}
+--- !u!19719996 &850291034059018258
+TilemapCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4087773000333576400}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_MaximumTileChangeCount: 1000
+  m_ExtrusionFactor: 0
 --- !u!1 &4087773000365194090
 GameObject:
   m_ObjectHideFlags: 0
@@ -2536,9 +2519,9 @@ GameObject:
   - component: {fileID: 4087773000486608329}
   - component: {fileID: 4087773000486608328}
   - component: {fileID: 4087773000486608330}
-  - component: {fileID: 5942966494725727943}
   - component: {fileID: 4087773000486608333}
   - component: {fileID: 4087773000486608332}
+  - component: {fileID: 4068815457166082020}
   m_Layer: 10
   m_Name: Spike Yellow
   m_TagString: Spike
@@ -2735,22 +2718,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!19719996 &5942966494725727943
-TilemapCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4087773000486608334}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 1
-  m_Offset: {x: 0, y: 0}
-  m_MaximumTileChangeCount: 1000
-  m_ExtrusionFactor: 0
 --- !u!66 &4087773000486608333
 CompositeCollider2D:
   m_ObjectHideFlags: 0
@@ -2768,9 +2735,7 @@ CompositeCollider2D:
   m_GeometryType: 0
   m_GenerationType: 0
   m_EdgeRadius: 0
-  m_ColliderPaths:
-  - m_Collider: {fileID: 5942966494725727943}
-    m_ColliderPaths: []
+  m_ColliderPaths: []
   m_CompositePaths:
     m_Paths: []
   m_VertexDistance: 0.0005
@@ -2790,6 +2755,22 @@ MonoBehaviour:
   color: 4
   tileType: 3
   tilemapRenderer: {fileID: 4087773000486608328}
+--- !u!19719996 &4068815457166082020
+TilemapCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4087773000486608334}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_MaximumTileChangeCount: 1000
+  m_ExtrusionFactor: 0
 --- !u!1 &4087773000620882363
 GameObject:
   m_ObjectHideFlags: 0
@@ -3342,9 +3323,9 @@ GameObject:
   - component: {fileID: 4087773001088333940}
   - component: {fileID: 4087773001088333943}
   - component: {fileID: 4087773001088333897}
-  - component: {fileID: 3478651612914623755}
   - component: {fileID: 4087773001088333896}
   - component: {fileID: 4087773001088333899}
+  - component: {fileID: 2348772494424262946}
   m_Layer: 10
   m_Name: Spike Blue
   m_TagString: Spike
@@ -3541,22 +3522,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!19719996 &3478651612914623755
-TilemapCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4087773001088333901}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 1
-  m_Offset: {x: 0, y: 0}
-  m_MaximumTileChangeCount: 1000
-  m_ExtrusionFactor: 0
 --- !u!66 &4087773001088333896
 CompositeCollider2D:
   m_ObjectHideFlags: 0
@@ -3574,9 +3539,7 @@ CompositeCollider2D:
   m_GeometryType: 0
   m_GenerationType: 0
   m_EdgeRadius: 0
-  m_ColliderPaths:
-  - m_Collider: {fileID: 3478651612914623755}
-    m_ColliderPaths: []
+  m_ColliderPaths: []
   m_CompositePaths:
     m_Paths: []
   m_VertexDistance: 0.0005
@@ -3596,6 +3559,22 @@ MonoBehaviour:
   color: 5
   tileType: 3
   tilemapRenderer: {fileID: 4087773001088333943}
+--- !u!19719996 &2348772494424262946
+TilemapCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4087773001088333901}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_MaximumTileChangeCount: 1000
+  m_ExtrusionFactor: 0
 --- !u!1 &4087773001185720433
 GameObject:
   m_ObjectHideFlags: 0
@@ -3608,9 +3587,9 @@ GameObject:
   - component: {fileID: 4087773001185720440}
   - component: {fileID: 4087773001185720443}
   - component: {fileID: 4087773001185720445}
-  - component: {fileID: 7756100601801670387}
   - component: {fileID: 4087773001185720444}
   - component: {fileID: 4087773001185720447}
+  - component: {fileID: 1791970032902471747}
   m_Layer: 10
   m_Name: Spike White
   m_TagString: Spike
@@ -3807,22 +3786,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!19719996 &7756100601801670387
-TilemapCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4087773001185720433}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 1
-  m_Offset: {x: 0, y: 0}
-  m_MaximumTileChangeCount: 1000
-  m_ExtrusionFactor: 0
 --- !u!66 &4087773001185720444
 CompositeCollider2D:
   m_ObjectHideFlags: 0
@@ -3840,9 +3803,7 @@ CompositeCollider2D:
   m_GeometryType: 0
   m_GenerationType: 0
   m_EdgeRadius: 0
-  m_ColliderPaths:
-  - m_Collider: {fileID: 7756100601801670387}
-    m_ColliderPaths: []
+  m_ColliderPaths: []
   m_CompositePaths:
     m_Paths: []
   m_VertexDistance: 0.0005
@@ -3862,6 +3823,22 @@ MonoBehaviour:
   color: 1
   tileType: 3
   tilemapRenderer: {fileID: 4087773001185720443}
+--- !u!19719996 &1791970032902471747
+TilemapCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4087773001185720433}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_MaximumTileChangeCount: 1000
+  m_ExtrusionFactor: 0
 --- !u!1 &4718961968614323711
 GameObject:
   m_ObjectHideFlags: 0
@@ -4267,9 +4244,9 @@ GameObject:
   - component: {fileID: 4959617064914151375}
   - component: {fileID: 8621995066575892052}
   - component: {fileID: 2691472356479763112}
-  - component: {fileID: 738417553485637508}
   - component: {fileID: 2089686703831522382}
   - component: {fileID: 4372360197370064016}
+  - component: {fileID: 3357579956542500998}
   m_Layer: 10
   m_Name: Spike Orange
   m_TagString: Spike
@@ -4466,22 +4443,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!19719996 &738417553485637508
-TilemapCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7789772779278772990}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 1
-  m_Offset: {x: 0, y: 0}
-  m_MaximumTileChangeCount: 1000
-  m_ExtrusionFactor: 0
 --- !u!66 &2089686703831522382
 CompositeCollider2D:
   m_ObjectHideFlags: 0
@@ -4499,9 +4460,7 @@ CompositeCollider2D:
   m_GeometryType: 0
   m_GenerationType: 0
   m_EdgeRadius: 0
-  m_ColliderPaths:
-  - m_Collider: {fileID: 738417553485637508}
-    m_ColliderPaths: []
+  m_ColliderPaths: []
   m_CompositePaths:
     m_Paths: []
   m_VertexDistance: 0.0005
@@ -4521,6 +4480,22 @@ MonoBehaviour:
   color: 6
   tileType: 3
   tilemapRenderer: {fileID: 8621995066575892052}
+--- !u!19719996 &3357579956542500998
+TilemapCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7789772779278772990}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_MaximumTileChangeCount: 1000
+  m_ExtrusionFactor: 0
 --- !u!1 &8190968461134350519
 GameObject:
   m_ObjectHideFlags: 0
@@ -4533,9 +4508,9 @@ GameObject:
   - component: {fileID: 707134880081566736}
   - component: {fileID: 6762491270549517939}
   - component: {fileID: 316454873868731350}
-  - component: {fileID: 5050443697152002044}
   - component: {fileID: 1696821215149510244}
   - component: {fileID: 1632398837185953446}
+  - component: {fileID: 212471743307318345}
   m_Layer: 10
   m_Name: Spike Purple
   m_TagString: Spike
@@ -4732,22 +4707,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!19719996 &5050443697152002044
-TilemapCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8190968461134350519}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 1
-  m_Offset: {x: 0, y: 0}
-  m_MaximumTileChangeCount: 1000
-  m_ExtrusionFactor: 0
 --- !u!66 &1696821215149510244
 CompositeCollider2D:
   m_ObjectHideFlags: 0
@@ -4765,9 +4724,7 @@ CompositeCollider2D:
   m_GeometryType: 0
   m_GenerationType: 0
   m_EdgeRadius: 0
-  m_ColliderPaths:
-  - m_Collider: {fileID: 5050443697152002044}
-    m_ColliderPaths: []
+  m_ColliderPaths: []
   m_CompositePaths:
     m_Paths: []
   m_VertexDistance: 0.0005
@@ -4787,6 +4744,22 @@ MonoBehaviour:
   color: 7
   tileType: 3
   tilemapRenderer: {fileID: 6762491270549517939}
+--- !u!19719996 &212471743307318345
+TilemapCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8190968461134350519}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_MaximumTileChangeCount: 1000
+  m_ExtrusionFactor: 0
 --- !u!1 &9187496290263043399
 GameObject:
   m_ObjectHideFlags: 0
@@ -4799,9 +4772,9 @@ GameObject:
   - component: {fileID: 1698074303456592149}
   - component: {fileID: 7232319763278555498}
   - component: {fileID: 7674843617791028120}
-  - component: {fileID: 1477286543562769919}
   - component: {fileID: 1533457370556942613}
   - component: {fileID: 7210449489842375146}
+  - component: {fileID: 5370058815102419983}
   m_Layer: 10
   m_Name: Spike Black
   m_TagString: Spike
@@ -4998,22 +4971,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!19719996 &1477286543562769919
-TilemapCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9187496290263043399}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 1
-  m_Offset: {x: 0, y: 0}
-  m_MaximumTileChangeCount: 1000
-  m_ExtrusionFactor: 0
 --- !u!66 &1533457370556942613
 CompositeCollider2D:
   m_ObjectHideFlags: 0
@@ -5031,9 +4988,7 @@ CompositeCollider2D:
   m_GeometryType: 0
   m_GenerationType: 0
   m_EdgeRadius: 0
-  m_ColliderPaths:
-  - m_Collider: {fileID: 1477286543562769919}
-    m_ColliderPaths: []
+  m_ColliderPaths: []
   m_CompositePaths:
     m_Paths: []
   m_VertexDistance: 0.0005
@@ -5053,3 +5008,19 @@ MonoBehaviour:
   color: 2
   tileType: 3
   tilemapRenderer: {fileID: 7232319763278555498}
+--- !u!19719996 &5370058815102419983
+TilemapCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9187496290263043399}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_MaximumTileChangeCount: 1000
+  m_ExtrusionFactor: 0

@@ -16,10 +16,10 @@ MonoBehaviour:
   coyoteTime: 0.15
   groundDamping: 20
   jumpHeight: 2.4
-  edgeJumpHeight: 6
-  wallJumpHeight: 4
+  edgeJumpHeight: 3
+  wallJumpHeight: 3
   wallJumpAngle: 60
-  superJumpHeight: 10
+  superJumpHeight: 6
   superJumpTime: 0.05
   bounceUpHeight: 6
   bounceSideHeight: 6

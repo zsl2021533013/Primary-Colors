@@ -41,35 +41,16 @@ namespace GameMain.Script.Controller.Character.Player
     
     public partial class SensorController : MonoBehaviour, IController
     {
-        /*public SensorProperty<RaycastHit2D> groundSensor;
-        public SensorProperty<RaycastHit2D> wallSensor;*/
         public SensorProperty<RaycastHit2D> edgeSensor;
-        public SensorProperty<Collider2D> spikeSensor;
-        public SensorProperty<Collider2D> targetSensor;
-        public SensorProperty<Collider2D> collectibleSensor;
-
+        
         public SensorProperty<RaycastHit2D> blackGroundSensor;
         public SensorProperty<(RaycastHit2D, Vector2)> orangeSensor;
         public SensorProperty<RaycastHit2D> purpleSensor;
 
+        public Transform edgeSensorTransform;
+
         private void Start()
         {
-            /*groundSensor = new SensorProperty<RaycastHit2D>(
-                () => Physics2D.Raycast(
-                    groundSensorTransform.position, 
-                    Vector2.down,
-                    groundSensorTransform.localScale.y / 2f,
-                    LayerMask.GetMask("Ground")),
-                value => value.collider != null);
-            
-            wallSensor = new SensorProperty<RaycastHit2D>(
-                () => Physics2D.Raycast(
-                    wallSensorTransform.position, 
-                    new Vector2(wallSensorTransform.Direction(), 0f),
-                    wallSensorTransform.localScale.x / 2f,
-                    LayerMask.GetMask("Ground")),
-                value => value.collider != null);*/
-            
             edgeSensor = new SensorProperty<RaycastHit2D>(
                 () => Physics2D.Raycast(
                     edgeSensorTransform.position, 
@@ -77,40 +58,7 @@ namespace GameMain.Script.Controller.Character.Player
                     edgeSensorTransform.localScale.x / 2f,
                     LayerMask.GetMask("Ground")),
                 value => value.collider != null);
-
-            spikeSensor = new SensorProperty<Collider2D>(
-                () => Physics2D.OverlapBox(
-                    spikeSensorTransform.position,
-                    spikeSensorTransform.localScale,
-                    0f,
-                    LayerMask.GetMask("Spike")),
-                value =>
-                {
-                    if (value == null)
-                    {
-                        return false;
-                    }
-                    
-                    var type = this.GetModel<TileModel>().GetTileType(value.transform);
-                    return type == TileType.Spike;
-                });
             
-            targetSensor = new SensorProperty<Collider2D>(
-                () => Physics2D.OverlapBox(
-                    spikeSensorTransform.position,
-                    spikeSensorTransform.localScale,
-                    0f,
-                    LayerMask.GetMask("Target")),
-                value => value);
-            
-            collectibleSensor = new SensorProperty<Collider2D>(
-                () => Physics2D.OverlapBox(
-                    spikeSensorTransform.position,
-                    spikeSensorTransform.localScale,
-                    0f,
-                    LayerMask.GetMask("Collectible")),
-                value => value);
-
             blackGroundSensor = new SensorProperty<RaycastHit2D>(
                 () => Physics2D.Raycast(
                     groundSensorTransform.position, 
@@ -163,30 +111,10 @@ namespace GameMain.Script.Controller.Character.Player
                     return color == ColorType.Purple;
                 });
 
-            /*Observable.EveryFixedUpdate()
-                .Subscribe(_ => groundSensor.Detect())
-                .AddTo(this);
-            
-            Observable.EveryFixedUpdate()
-                .Subscribe(_ => wallSensor.Detect())
-                .AddTo(this);*/
-            
             Observable.EveryFixedUpdate()
                 .Subscribe(_ => edgeSensor.Detect())
                 .AddTo(this);
             
-            Observable.EveryFixedUpdate()
-                .Subscribe(_ => spikeSensor.Detect())
-                .AddTo(this);
-            
-            Observable.EveryFixedUpdate()
-                .Subscribe(_ => targetSensor.Detect())
-                .AddTo(this);
-            
-            Observable.EveryFixedUpdate()
-                .Subscribe(_ => collectibleSensor.Detect())
-                .AddTo(this);
-
             Observable.EveryFixedUpdate()
                 .Subscribe(_ => blackGroundSensor.Detect())
                 .AddTo(this);
