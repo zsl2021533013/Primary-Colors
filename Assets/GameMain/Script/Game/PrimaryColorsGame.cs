@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using GameMain.Script.Controller;
+using GameMain.Script.Controller.Scene_System;
 using UnityEngine;
 
 namespace GameMain.Scripts.Game
@@ -11,6 +12,7 @@ namespace GameMain.Scripts.Game
         public override void Initialize()
         {
             levelManager  = Object.FindObjectOfType<LevelManager>();
+            
             levelManager.OnAwake();
         }
 

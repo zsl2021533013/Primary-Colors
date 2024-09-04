@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
+using DG.Tweening;
 using GameMain.Script.Controller.Interface;
 using QFramework;
 using Script.Architecture;
 using Script.Command;
+using Script.Event;
+using Script.Model;
 using UnityEngine;
 
 namespace GameMain.Script.Controller
@@ -23,6 +26,11 @@ namespace GameMain.Script.Controller
             removeCache = new List<IPrimaryColorsController>();
             
             this.SendCommand<SpawnPlayerCommand>();
+
+            DOVirtual.DelayedCall(2f, () =>
+            {
+                this.GetModel<PlayerModel>().Controller.FSM.Trigger(typeof(PlayerBornEvent));
+            });
         }
 
         public void OnUpdate(float elapse)

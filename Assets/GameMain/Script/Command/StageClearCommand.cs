@@ -6,11 +6,11 @@ using UnityEngine;
 
 namespace Script.Command
 {
-    public class ClearStageCommand : AbstractCommand
+    public class StageClearCommand : AbstractCommand
     {
         protected override void OnExecute()
         {
-            
+            this.SendEvent<StageClearEvent>();
         }
     }
 }

@@ -1,9 +1,11 @@
 using System;
+using DG.Tweening;
 using GameMain.Script.Consts;
 using GameMain.Script.Controller.Character.HFSM.StateMachine;
 using GameMain.Script.Controller.Character.Player.State;
 using GameMain.Script.Controller.Character.Player.State.Air_State;
 using GameMain.Script.Controller.Character.Player.State.Jump_State;
+using GameMain.Script.Controller.Environment_System.Collectible;
 using GameMain.Script.Controller.Input_System;
 using QFramework;
 using Script;
@@ -33,15 +35,16 @@ namespace GameMain.Script.Controller.Character.Player
 		
 		public override void OnAwake()
 		{
+			cc2D.OnAwake();
 			cc2D.onTriggerEnterEvent += RegisterTriggers;
 
 			#region FSM
 			
 			FSM = new StateMachine<Type, Type, Type>();
 
-			this.RegisterEvent<PlayerRebornEvent>(e =>
+			this.RegisterEvent<PlayerBornEvent>(e =>
 			{
-				FSM.Trigger(typeof(PlayerRebornEvent));
+				FSM.Trigger(typeof(PlayerBornEvent));
 			}).UnRegisterWhenGameObjectDestroyed(gameObject);
 			
 			this.RegisterEvent<PlayerDieEvent>(e =>
@@ -49,29 +52,27 @@ namespace GameMain.Script.Controller.Character.Player
 				FSM.Trigger(typeof(PlayerDieEvent));
 			}).UnRegisterWhenGameObjectDestroyed(gameObject);
 			
-			this.RegisterEvent<StageClearEvent>(e =>
-			{
-				FSM.Trigger(typeof(StageClearEvent));
-			}).UnRegisterWhenGameObjectDestroyed(gameObject);
+			FSM.AddState<PlayerSleepState>(
+				animator,
+				"Sleep");
 			
 			FSM.AddState<PlayerBornState>(
 				animator,
 				"Born",
+				onEnter: state =>
+				{
+					_velocity = Vector2.zero;
+					this.GetModel<PlayerModel>().PlayerColor.Value = ColorType.White; 
+				},
 				canExit: state => state.timer.IsAnimatorFinish,
 				needsExitTime: true);
 			
 			FSM.AddState<PlayerDieState>(
 				animator,
 				"Die",
-				onLogic: state =>
+				onEnter: state =>
 				{
-					if (state.timer.IsAnimatorFinish)
-					{
-						this.SendCommand<RebornPlayerCommand>();
-					}
-				},
-				onExit: state =>
-				{
+					_velocity = Vector2.zero;
 					this.GetModel<PlayerModel>().PlayerColor.Value = ColorType.White;
 				},
 				canExit: state => state.timer.IsAnimatorFinish,
@@ -82,6 +83,7 @@ namespace GameMain.Script.Controller.Character.Player
 				"Stage Clear",
 				onEnter: state =>
 				{
+					_velocity = Vector2.zero;
 					this.GetModel<PlayerModel>().PlayerColor.Value = ColorType.White; 
 				},
 				onLogic: state =>
@@ -221,7 +223,7 @@ namespace GameMain.Script.Controller.Character.Player
 					if (this.GetModel<TileModel>().GetTileType(tile) == TileType.Touchable)
 					{
 						var color = this.GetModel<TileModel>()
-							.GetTileColor(sensorController.groundSensor.Value.transform);
+							.GetTileColor(cc2D.raycastHitVerticle[0].transform);
 						this.SendCommand(new TouchColorCommand { color = color });
 					}
 					
@@ -353,7 +355,7 @@ namespace GameMain.Script.Controller.Character.Player
 				onEnter: state =>
 				{
 					transform.position =
-						sensorController.wallSensor.Value.point + 
+						cc2D.raycastHitHorizontal[0].point + 
 						Vector2.right * (config.wallClimbOffset * transform.Direction());
 				},
 				onLogic: state =>
@@ -379,6 +381,7 @@ namespace GameMain.Script.Controller.Character.Player
 				"Shake",
 				onEnter: state =>
 				{
+					_velocity = Vector2.zero;
 					this.SendCommand(new SpawnParticleCommand
 					{
 						type = ParticleType.Shake, 
@@ -394,7 +397,7 @@ namespace GameMain.Script.Controller.Character.Player
 				canExit: state => state.timer > config.coyoteTime,
 				needsExitTime: true);
 			
-			FSM.AddTriggerTransitionFromAny(typeof(PlayerRebornEvent), typeof(PlayerBornState), forceInstantly: true);
+			FSM.AddTriggerTransitionFromAny(typeof(PlayerBornEvent), typeof(PlayerBornState), forceInstantly: true);
 			FSM.AddTriggerTransitionFromAny(typeof(PlayerDieEvent), typeof(PlayerDieState), forceInstantly: true);
 			FSM.AddTriggerTransitionFromAny(typeof(StageClearEvent), typeof(PlayerStageClearState), forceInstantly: true);
 
@@ -406,11 +409,11 @@ namespace GameMain.Script.Controller.Character.Player
 			{
 				if (this.GetModel<PlayerModel>().PlayerColor.Value == ColorType.Black)
 				{
-					return !(sensorController.groundSensor || sensorController.blackGroundSensor);
+					return !(cc2D.isGrounded || sensorController.blackGroundSensor);
 				}
 				else
 				{
-					return !sensorController.groundSensor;
+					return !cc2D.isGrounded;
 				}
 			});
 			
@@ -443,11 +446,11 @@ namespace GameMain.Script.Controller.Character.Player
 				{
 					if (this.GetModel<PlayerModel>().PlayerColor.Value == ColorType.Black)
 					{
-						return sensorController.groundSensor || sensorController.blackGroundSensor;
+						return cc2D.isGrounded || sensorController.blackGroundSensor;
 					}
 					else
 					{
-						return sensorController.groundSensor;
+						return cc2D.isGrounded;
 					}
 				},
 				successAction: () =>
@@ -464,14 +467,14 @@ namespace GameMain.Script.Controller.Character.Player
 						pos = transform.position
 					});
 					
-					if (sensorController.groundSensor)
+					if (cc2D.isGrounded)
 					{
-						var tile = sensorController.groundSensor.Value.transform;
+						var tile = cc2D.raycastHitVerticle[0].transform;
 						
 						if (this.GetModel<TileModel>().GetTileType(tile) == TileType.Touchable)
 						{
 							var color = this.GetModel<TileModel>()
-								.GetTileColor(sensorController.groundSensor.Value.transform);
+								.GetTileColor(cc2D.raycastHitVerticle[0].transform);
 							this.SendCommand(new TouchColorCommand { color = color });
 						}
 
@@ -483,14 +486,14 @@ namespace GameMain.Script.Controller.Character.Player
 				});
 
 			FSM.AddTransition<PlayerAirSubFSM, PlayerWallState>
-			(transition => sensorController.wallSensor &&
+			(transition => (transform.Direction() == -1 ? cc2D.collisionState.left : cc2D.collisionState.right) &&
 			               sensorController.edgeSensor &&
-			               !sensorController.groundSensor && 
+			               !cc2D.isGrounded && 
 			               (this.GetModel<PlayerModel>().PlayerColor.Value == ColorType.Green
-			                || this.GetModel<TileModel>().GetTileColor(sensorController.wallSensor?.Value.transform) == ColorType.Green));
+			                || this.GetModel<TileModel>().GetTileColor(cc2D.raycastHitHorizontal[0].transform) == ColorType.Green));
 
 			FSM.AddTransition<PlayerWallState, PlayerAirSubFSM>
-				(transition => !sensorController.groundSensor && !sensorController.wallSensor);
+				(transition => !cc2D.isGrounded && !(transform.Direction() == -1 ? cc2D.collisionState.left : cc2D.collisionState.right));
 			
 			FSM.AddTransition<PlayerWallState, PlayerWallJumpState>
 				(transition => InputKit.Instance.jump);
@@ -504,7 +507,7 @@ namespace GameMain.Script.Controller.Character.Player
 				(transition => transform.IsOppositeDirection(InputKit.Instance.move.Value.x), true);
 
 			FSM.AddTransition<PlayerShakeState, PlayerAirSubFSM>
-				(transition => !sensorController.groundSensor, true);
+				(transition => !cc2D.isGrounded, true);
 			
 			FSM.AddTransition<PlayerShakeState, PlayerMoveState>
 				(transition => true);
@@ -527,28 +530,32 @@ namespace GameMain.Script.Controller.Character.Player
 				return;
 			}
 			
-			if (col.CompareTag("Target") && sensorController.targetSensor)
+			if (col.CompareTag("Target"))
 			{
 				isLocked = true;
-				this.SendCommand<ClearStageCommand>();
+				FSM.Trigger(typeof(StageClearEvent));
+				DOVirtual.DelayedCall(1f, this.SendCommand<StageClearCommand>);
 				
 				return;
 			}
 			
 			if (col.CompareTag("Spike") && 
-			    this.GetModel<TileModel>().GetTileColor(sensorController.spikeSensor.Value.transform) 
-			    != this.GetModel<PlayerModel>().PlayerColor.Value)
+			    this.GetModel<TileModel>().GetTileColor(col.transform) != this.GetModel<PlayerModel>().PlayerColor.Value)
 			{
 				isLocked = true;
 				this.SendCommand<KillPlayerCommand>();
+				DOVirtual.DelayedCall(1f, () =>
+				{
+					isLocked = false;
+					this.SendCommand<RebornPlayerCommand>();
+				});
 				
 				return;
 			}
 			
-			if (col.CompareTag("Collectible") && sensorController.collectibleSensor)
+			if (col.CompareTag("Collectible"))
 			{
-				var controller = this.GetModel<CollectibleModel>()
-					.GetController(sensorController.collectibleSensor.Value.transform);
+				var controller = col.GetComponent<CollectibleController>();
 				controller.isFollowing.Value = true;
 				
 				return;
@@ -562,13 +569,15 @@ namespace GameMain.Script.Controller.Character.Player
 			playerState = FSM.ActiveStateName.Name;
 			
 			FSM.OnLogic();
-			
-			_velocity.y -= config.gravity * elapse;
-			
-			cc2D.move(_velocity * elapse);
-			
-			animator.SetFloat("SpeedX", cc2D.velocity.x.Abs());
-			animator.SetFloat("SpeedY", cc2D.velocity.y);
+
+			if (!isLocked)
+			{
+				_velocity.y -= config.gravity * elapse;
+				cc2D.move(_velocity * elapse);
+				
+				animator.SetFloat("SpeedX", cc2D.velocity.x.Abs());
+				animator.SetFloat("SpeedY", cc2D.velocity.y);
+			}
 			
 			if (InputKit.Instance.reset)
 			{

@@ -11,8 +11,6 @@ namespace Script.Architecture
         {
             RegisterModel(new PlayerModel());
             RegisterModel(new TileModel());
-            RegisterModel(new TargetModel());
-            RegisterModel(new CollectibleModel());
         }
     }
 

@@ -14,6 +14,7 @@ namespace Script.Model
         public Transform Transform { get; private set; }
         public Transform CollectibleTarget { get; private set; }
         public GameObject GameObject { get; private set; }
+        public CapsuleCollider2D Collider { get; private set; }
         public SpriteRenderer SpriteRenderer { get; private set; }
         public PlayerController Controller { get; private set; }
         public BindableProperty<ColorType> PlayerColor { get; private set; }
@@ -43,6 +44,7 @@ namespace Script.Model
             Transform = transform;
             CollectibleTarget = transform.Find("Collectible Target");
             GameObject = transform.gameObject;
+            Collider = transform.GetComponent<CapsuleCollider2D>();
             SpriteRenderer = transform.GetComponentInChildren<SpriteRenderer>();
             Controller = transform.GetComponentInChildren<PlayerController>();
         }

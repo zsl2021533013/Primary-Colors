@@ -1,4 +1,5 @@
-﻿using GameMain.Script.Controller;
+﻿using DG.Tweening;
+using GameMain.Script.Controller;
 using GameMain.Scripts.Utility;
 using QFramework;
 using Script.Architecture;
@@ -14,24 +15,21 @@ namespace Script.Command
         {
             var bornPoint = GameObject.Find("Player Spawn Point");
 
-            var hit = Physics2D.Raycast(bornPoint.transform.position, Vector2.down);
+            var hit = Physics2D.Raycast(
+                bornPoint.transform.position, 
+                Vector2.down, 
+                float.PositiveInfinity,
+                LayerMask.GetMask("Ground"));
 
             var pos = hit.point + Vector2.up;
             
             var model = this.GetModel<PlayerModel>();
-            if (model.Controller == null)
-            {
-                var player = LevelManager.Instance.InstantiateController(
-                    Resources.Load<GameObject>(PathManager.GetCharacterAsset("Player")),
-                    pos,
-                    Quaternion.identity);
-                model.RegisterPlayer(player.transform);
-            }
-            
-            this.SendEvent<PlayerRebornEvent>();
-            
             model.Transform.position = pos;
+            Physics2D.SyncTransforms(); // 强制更新，进而更新 cc2D 中 capsuleCollider.bounds 的值，否则会有延迟
             model.Controller.cc2D.warpToGrounded();
+            
+            this.SendEvent<PlayerBornEvent>();
         }
+        
     }
 }

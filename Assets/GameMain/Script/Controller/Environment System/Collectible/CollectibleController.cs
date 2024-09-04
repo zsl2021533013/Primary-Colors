@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace GameMain.Script.Controller.Environment_System.Collectible
 {
-    public partial class CollectibleController : MonoBehaviour, IController
+    public partial class CollectibleController : ControllerBase
     {
         public ReactiveProperty<bool> isFollowing = new ReactiveProperty<bool>(false);
 
@@ -22,10 +22,6 @@ namespace GameMain.Script.Controller.Environment_System.Collectible
 
         private void Awake()
         {
-            this.GetModel<CollectibleModel>()
-                .RegisterCollectible(transform, this)
-                .UnRegisterWhenGameObjectDestroyed(this);
-            
             mStartPos = transform.position;
 
             this.RegisterEvent<PlayerDieEvent>(e =>
@@ -89,11 +85,6 @@ namespace GameMain.Script.Controller.Environment_System.Collectible
                     }
                 })
                 .AddTo(this);
-        }
-
-        public IArchitecture GetArchitecture()
-        {
-            return PrimaryColors.Interface;
         }
     }
 }

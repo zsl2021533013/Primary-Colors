@@ -41,8 +41,8 @@ namespace GameMain.Script.Controller.Character.Player
     
     public partial class SensorController : MonoBehaviour, IController
     {
-        public SensorProperty<RaycastHit2D> groundSensor;
-        public SensorProperty<RaycastHit2D> wallSensor;
+        /*public SensorProperty<RaycastHit2D> groundSensor;
+        public SensorProperty<RaycastHit2D> wallSensor;*/
         public SensorProperty<RaycastHit2D> edgeSensor;
         public SensorProperty<Collider2D> spikeSensor;
         public SensorProperty<Collider2D> targetSensor;
@@ -54,7 +54,7 @@ namespace GameMain.Script.Controller.Character.Player
 
         private void Start()
         {
-            groundSensor = new SensorProperty<RaycastHit2D>(
+            /*groundSensor = new SensorProperty<RaycastHit2D>(
                 () => Physics2D.Raycast(
                     groundSensorTransform.position, 
                     Vector2.down,
@@ -68,7 +68,7 @@ namespace GameMain.Script.Controller.Character.Player
                     new Vector2(wallSensorTransform.Direction(), 0f),
                     wallSensorTransform.localScale.x / 2f,
                     LayerMask.GetMask("Ground")),
-                value => value.collider != null);
+                value => value.collider != null);*/
             
             edgeSensor = new SensorProperty<RaycastHit2D>(
                 () => Physics2D.Raycast(
@@ -163,13 +163,13 @@ namespace GameMain.Script.Controller.Character.Player
                     return color == ColorType.Purple;
                 });
 
-            Observable.EveryFixedUpdate()
+            /*Observable.EveryFixedUpdate()
                 .Subscribe(_ => groundSensor.Detect())
                 .AddTo(this);
             
             Observable.EveryFixedUpdate()
                 .Subscribe(_ => wallSensor.Detect())
-                .AddTo(this);
+                .AddTo(this);*/
             
             Observable.EveryFixedUpdate()
                 .Subscribe(_ => edgeSensor.Detect())

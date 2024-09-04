@@ -11,7 +11,7 @@ using Timer = GameMain.Script.Controller.Character.HFSM.Util.Timer;
 
 namespace GameMain.Script.Controller.Environment_System
 {
-    public partial class TileController : MonoBehaviour, IController, IColor
+    public partial class TileController : ControllerBase, IColor
     {
         [SerializeField] private ColorType color;
         [SerializeField] private TileType tileType;
@@ -72,11 +72,6 @@ namespace GameMain.Script.Controller.Environment_System
             this.GetModel<TileModel>()
                 .RegisterTile(transform, this, tileType)
                 .UnRegisterWhenGameObjectDestroyed(this);
-        }
-
-        public IArchitecture GetArchitecture()
-        {
-            return PrimaryColors.Interface;
         }
     }
 }

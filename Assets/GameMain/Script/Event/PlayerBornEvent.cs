@@ -1,6 +1,6 @@
 ﻿namespace Script.Event
 {
-    public class PlayerRebornEvent
+    public class PlayerBornEvent
     {
         
     }

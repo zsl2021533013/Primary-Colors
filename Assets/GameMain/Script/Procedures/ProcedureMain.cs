@@ -1,9 +1,13 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using GameMain.Script.Controller.Scene_System;
 using GameMain.Scripts.Game;
 using GameMain.Scripts.UI;
 using GameMain.Scripts.Utility;
 using GameMain.Scripts.Utility.QFramework_Extension;
 using QFramework;
+using Script.Architecture;
+using Script.Event;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -41,6 +45,11 @@ namespace GameMain.Scripts.Procedure
         {
             FSM.Update();
         }
+
+        public IArchitecture GetArchitecture()
+        {
+            return PrimaryColors.Interface;
+        }
     }
 
     public class LaunchState : AbstractState<ProcedureStates, ProcedureMain>
@@ -65,6 +74,23 @@ namespace GameMain.Scripts.Procedure
             {
                 Directory.CreateDirectory(savePath);
             }
+            
+            GameState.sceneList.AddRange(Resources.LoadAll<SceneConfig>("Data/Scenes"));
+            GameState.sceneList.Sort((a, b) => 
+            {
+                var partsA = a.sceneNumber.Split('-');
+                var partsB = b.sceneNumber.Split('-');
+
+                var firstNumberA = int.Parse(partsA[0]);
+                var secondNumberA = int.Parse(partsA[1]);
+
+                var firstNumberB = int.Parse(partsB[0]);
+                var secondNumberB = int.Parse(partsB[1]);
+
+                var firstComparison = firstNumberA.CompareTo(firstNumberB);
+
+                return firstComparison == 0 ? secondNumberA.CompareTo(secondNumberB) : firstComparison;
+            });
             
             mFSM.ChangeState(ProcedureStates.ChangeScene);
         }
@@ -107,7 +133,8 @@ namespace GameMain.Scripts.Procedure
             if (asyncOperation is not null && asyncOperation.isDone && !isFadingIn)
             {
                 isFadingIn = true;
-                panel.FadeIn(() => mFSM.ChangeState(nextState));
+                panel.FadeIn();
+                mFSM.ChangeState(nextState);
             }
         }
     } 
@@ -128,7 +155,10 @@ namespace GameMain.Scripts.Procedure
             panel.startGameBtn.onClick.AddListener(() =>
             {
                 ChangeSceneState.nextState = ProcedureStates.Game;
-                ChangeSceneState.nextScenePath = PathManager.GetLevelAsset("1-1");
+                
+                ChangeSceneState.nextScenePath = PathManager.GetLevelAsset("1-2");
+                GameState.currentScene = GameState.sceneList.Find(config => config.sceneNumber == "1-2");
+                
                 mFSM.ChangeState(ProcedureStates.ChangeScene);
             });
         }
@@ -145,6 +175,9 @@ namespace GameMain.Scripts.Procedure
     {
         private GameBase game = new PrimaryColorsGame();
         
+        public static SceneConfig currentScene;
+        public static List<SceneConfig> sceneList = new List<SceneConfig>();
+        
         public GameState(FSM<ProcedureStates> fsm, ProcedureMain target) : base(fsm, target)
         {
         }
@@ -152,6 +185,8 @@ namespace GameMain.Scripts.Procedure
         protected override void OnEnter()
         {
             base.OnEnter();
+
+            PrimaryColors.Interface.RegisterEvent<StageClearEvent>(NextLevel);
             
             game.Initialize();
         }
@@ -174,7 +209,37 @@ namespace GameMain.Scripts.Procedure
         {
             base.OnExit();
             
+            PrimaryColors.Interface.UnRegisterEvent<StageClearEvent>(NextLevel);
+            
             game.Shutdown();
+        }
+
+        private void NextLevel(StageClearEvent e)
+        {
+            var currentIndex = sceneList.IndexOf(currentScene);
+
+            if (currentIndex == -1)
+            {
+                return;
+            }
+                
+            if (currentIndex == sceneList.Count)
+            {
+                ChangeSceneState.nextState = ProcedureStates.Menu;
+                ChangeSceneState.nextScenePath = PathManager.GetSceneAsset("Menu");
+                
+                mFSM.ChangeState(ProcedureStates.ChangeScene);
+            }
+            else
+            {
+                var nextScene = sceneList[currentIndex + 1];
+                    
+                ChangeSceneState.nextState = ProcedureStates.Game;
+                ChangeSceneState.nextScenePath = PathManager.GetLevelAsset(nextScene.sceneNumber);
+                currentScene = nextScene;
+                
+                mFSM.ChangeState(ProcedureStates.ChangeScene);
+            }
         }
     }
 }

@@ -3,7 +3,10 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Spike
+  - Target
+  - Collectible
   layers:
   - Default
   - TransparentFX
@@ -15,9 +18,9 @@ TagManager:
   - Player Black
   - Ground
   - Black
-  - Spike
-  - Target
-  - Collectible
+  - Trigger
+  - 
+  - 
   - 
   - 
   - 

@@ -463,7 +463,7 @@ MonoBehaviour:
     m_Bits: 256
   triggerMask:
     serializedVersion: 2
-    m_Bits: 7168
+    m_Bits: 1024
   totalHorizontalRays: 8
   totalVerticalRays: 4
   capsuleCollider: {fileID: 1054400817991141931}
@@ -480,6 +480,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d44a704ebe30aa54ca38ac3c260c74ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerState: 
   config: {fileID: 11400000, guid: 1c892852176f0cb4ca6854ac07fbeca0, type: 2}
   animator: {fileID: 6917722311824865200}
   cc2D: {fileID: 7770879497969472181}

@@ -26,5 +26,10 @@
         {
             return $"UI/{assetName}";
         }
+        
+        public static string GetDataAsset(string assetName)
+        {
+            return $"Data/{assetName}";
+        }
     }
 }

@@ -97,9 +97,7 @@ namespace GameMain.Script.Controller.Character.Player
 
 		public Vector3 velocity { get; private set; }
 		public bool isGrounded { get { return collisionState.below; } }
-
-		const float kSkinWidthFloatFudgeFactor = 0.001f;
-
+		
 		#endregion
 
 
@@ -117,7 +115,8 @@ namespace GameMain.Script.Controller.Character.Player
 		/// stores any raycast hits that occur this frame. we have to store them in case we get a hit moving
 		/// horizontally and vertically so that we can send the events after all collision state is set
 		/// </summary>
-		List<RaycastHit2D> _raycastHitsThisFrame = new List<RaycastHit2D>( 2 );
+		[HideInInspector] public List<RaycastHit2D> raycastHitVerticle = new List<RaycastHit2D>();
+		[HideInInspector] public List<RaycastHit2D> raycastHitHorizontal = new List<RaycastHit2D>();
 
 		// horizontal/vertical movement data
 		float _verticalDistanceBetweenRays;
@@ -125,7 +124,7 @@ namespace GameMain.Script.Controller.Character.Player
 		
 		#region Monobehaviour
 
-		void Awake()
+		public void OnAwake()
 		{
 			// here, we trigger our properties that have setters with bodies
 			skinWidth = _skinWidth;
@@ -187,16 +186,17 @@ namespace GameMain.Script.Controller.Character.Player
 
 			// clear our state
 			collisionState.reset();
-			_raycastHitsThisFrame.Clear();
+			raycastHitVerticle.Clear();
+			raycastHitHorizontal.Clear();
 
 			primeRaycastOrigins();
-
+		
 			// now we check movement in the horizontal dir
 			if( deltaMovement.x != 0f )
 			{
 				moveHorizontally(ref deltaMovement);
 			}
-
+			
 			// next, check movement in the vertical dir
 			if( deltaMovement.y != 0f )
 			{
@@ -220,9 +220,13 @@ namespace GameMain.Script.Controller.Character.Player
 			// send off the collision events if we have a listener
 			if( onControllerCollidedEvent != null )
 			{
-				for( var i = 0; i < _raycastHitsThisFrame.Count; i++ )
+				for( var i = 0; i < raycastHitVerticle.Count; i++ )
 				{
-					onControllerCollidedEvent(_raycastHitsThisFrame[i]);
+					onControllerCollidedEvent(raycastHitVerticle[i]);
+				}
+				for( var i = 0; i < raycastHitHorizontal.Count; i++ )
+				{
+					onControllerCollidedEvent(raycastHitHorizontal[i]);
 				}
 			}
 		}
@@ -314,12 +318,7 @@ namespace GameMain.Script.Controller.Character.Player
 						collisionState.left = true;
 					}
 
-					_raycastHitsThisFrame.Add( _raycastHit );
-
-					// we add a small fudge factor for the float operations here. if our rayDistance is smaller
-					// than the width + fudge bail out because we have a direct impact
-					if( rayDistance < _skinWidth + kSkinWidthFloatFudgeFactor )
-						break;
+					raycastHitHorizontal.Add( _raycastHit );
 				}
 			}
 		}
@@ -336,19 +335,22 @@ namespace GameMain.Script.Controller.Character.Player
 
 			// if we are moving up, we should ignore the layers in oneWayPlatformMask
 			var mask = platformMask;
-
 			for( var i = 0; i < totalVerticalRays; i++ )
 			{
 				var ray = new Vector2( initialRayOrigin.x + i * _horizontalDistanceBetweenRays, initialRayOrigin.y );
-
-				DrawRay( ray, rayDirection * rayDistance, Color.red );
+				DrawRay( ray, rayDirection * rayDistance, Color.yellow );
 				_raycastHit = Physics2D.Raycast( ray, rayDirection, rayDistance, mask );
+				
 				if( _raycastHit )
 				{
+					if (deltaMovement == Vector3.down)
+					{
+						Debug.Log(ray);
+					}
 					// set our new deltaMovement and recalculate the rayDistance taking it into account
 					deltaMovement.y = _raycastHit.point.y - ray.y;
 					rayDistance = Mathf.Abs( deltaMovement.y );
-
+					
 					// remember to remove the skinWidth from our deltaMovement
 					if( isGoingUp )
 					{
@@ -361,12 +363,7 @@ namespace GameMain.Script.Controller.Character.Player
 						collisionState.below = true;
 					}
 
-					_raycastHitsThisFrame.Add( _raycastHit );
-
-					// we add a small fudge factor for the float operations here. if our rayDistance is smaller
-					// than the width + fudge bail out because we have a direct impact
-					if( rayDistance < _skinWidth + kSkinWidthFloatFudgeFactor )
-						break;
+					raycastHitVerticle.Add( _raycastHit );
 				}
 			}
 		}
