@@ -444,8 +444,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e919a9f4feb34b4aac272846128070a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blackColliderList:
-  - {fileID: 4561030930769817429}
+  blackTileList:
+  - {fileID: 4087773000307061006}
 --- !u!1 &4087772999376348390
 GameObject:
   m_ObjectHideFlags: 0
