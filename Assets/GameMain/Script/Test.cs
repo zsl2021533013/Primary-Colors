@@ -1,24 +1,49 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using GameMain.Script.Consts;
-using GameMain.Script.Controller;
 using GameMain.Scripts.Utility;
 using QFramework;
-using Script.Architecture;
-using Script.Command;
-using Script.Model;
-using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.Tilemaps;
 
-public class Test : ControllerBase
+namespace GameMain.Script
 {
-    private void Update()
+    public class Test : MonoBehaviour
     {
-        if (Input.GetKeyDown(KeyCode.T))
+        public Collider2D collider;
+
+        private void Update()
         {
-            SceneManager.LoadSceneAsync(PathManager.GetLevelAsset("1-2"));
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                Debug.Log(CheckPlayerCollision());
+            }
+        }
+        
+        private bool CheckPlayerCollision()
+        {
+            // 如果 collider.enabled 为 false，则暂时的开启，检测后关闭
+            var flag = collider.enabled;
+            if (!flag)
+            {
+                collider.enabled = true;
+                Physics.SyncTransforms();
+            }
+            
+            // 创建一个 ContactFilter2D，用于过滤出 Player 层的碰撞
+            var contactFilter = new ContactFilter2D();
+            contactFilter.SetLayerMask(LayerMask.GetMask("Player"));
+            contactFilter.useLayerMask = true; // 确保使用 LayerMask 过滤
+            contactFilter.useTriggers = true; // 根据是否想检测触发器调整
+
+            // 获取与 TilemapCollider2D 碰撞的对象
+            var results = new Collider2D[10]; // 一个数组来保存检测到的碰撞体，大小可以根据需求调整
+            var collisionCount = collider.OverlapCollider(contactFilter, results);
+
+            collider.enabled = flag;
+            
+            // 如果有碰撞，返回 true
+            return collisionCount > 0;
         }
     }
 }

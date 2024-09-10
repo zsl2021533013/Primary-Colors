@@ -12,6 +12,11 @@
             return $"Assets/Resources/Scenes/Levels/{assetName}.unity";
         }
         
+        public static string GetMaterialAsset(string assetName)
+        {
+            return $"Material/{assetName}";
+        }
+        
         public static string GetCharacterAsset(string assetName)
         {
             return $"Character/{assetName}";
@@ -21,6 +26,11 @@
         {
             return $"Particles/{assetName}";
         } 
+        
+        public static string GetEnvironmentAsset(string assetName)
+        {
+            return $"Environment/{assetName}";
+        }
 
         public static string GetUIAsset(string assetName)
         {
@@ -31,5 +41,10 @@
         {
             return $"Data/{assetName}";
         }
+        
+        public static string GetSpriteAsset(string assetName)
+        {
+            return $"Sprite/{assetName}";
+        } 
     }
 }

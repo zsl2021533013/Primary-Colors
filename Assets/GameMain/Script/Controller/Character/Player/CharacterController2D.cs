@@ -2,12 +2,18 @@
 
 using System;
 using System.Collections.Generic;
+using GameMain.Script.Consts;
+using GameMain.Script.Controller.Interface;
+using QFramework;
+using Script;
+using Script.Architecture;
+using Script.Model;
 using UnityEngine;
 
 namespace GameMain.Script.Controller.Character.Player
 {
 	[RequireComponent( typeof( CapsuleCollider2D ), typeof( Rigidbody2D ) )]
-	public class CharacterController2D : MonoBehaviour
+	public class CharacterController2D : MonoBehaviour, IController
 	{
 		#region internal types
 
@@ -89,17 +95,17 @@ namespace GameMain.Script.Controller.Character.Player
 		[Range( 2, 20 )]
 		public int totalVerticalRays = 4;
 		
-		public CapsuleCollider2D capsuleCollider;
 		public Rigidbody2D rigidBody2D;
+		public CapsuleCollider2D capsuleCollider;
 
 		[NonSerialized]
 		public CharacterCollisionState2D collisionState = new CharacterCollisionState2D();
 
 		public Vector3 velocity { get; private set; }
 		public bool isGrounded { get { return collisionState.below; } }
+		public bool isWall => transform.Direction() == -1 ? collisionState.left : collisionState.right;
 		
 		#endregion
-
 
 		/// <summary>
 		/// holder for our raycast origin corners (TR, TL, BR, BL)
@@ -122,6 +128,13 @@ namespace GameMain.Script.Controller.Character.Player
 		float _verticalDistanceBetweenRays;
 		float _horizontalDistanceBetweenRays;
 		
+		public Transform edgeSensorTransform;
+		
+		public SensorProperty<Collider2D> edgeSensor;
+        
+		public SensorProperty<(RaycastHit2D, Vector2)> orangeSensor;
+		public SensorProperty<RaycastHit2D> purpleSensor;
+		
 		#region Monobehaviour
 
 		public void OnAwake()
@@ -138,6 +151,58 @@ namespace GameMain.Script.Controller.Character.Player
 					Physics2D.IgnoreLayerCollision(gameObject.layer, i);
 				}
 			}
+			
+			edgeSensor = new SensorProperty<Collider2D>(
+                () => Physics2D.OverlapBox(
+                    edgeSensorTransform.position, 
+                    edgeSensorTransform.localScale,
+                    0f,
+                    LayerMask.GetMask("Ground")),
+                value => value != null);
+            
+            orangeSensor = new SensorProperty<(RaycastHit2D, Vector2)>(() =>
+                {
+                    var ans = Physics2D.Raycast(
+                        transform.position + (Vector3)capsuleCollider.offset,
+                        Vector2.down,
+                        capsuleCollider.bounds.extents.y + 0.1f,
+                        LayerMask.GetMask("Ground"));
+
+                    if (ans.collider)
+                    {
+                        return (ans, Vector2.down);
+                    }
+
+                    ans = Physics2D.Raycast(
+                        transform.position + (Vector3)capsuleCollider.offset,
+                        new Vector2(transform.Direction(), 0f),
+                        capsuleCollider.bounds.extents.x + 0.1f,
+                        LayerMask.GetMask("Ground"));
+                    
+                    if (ans.collider)
+                    {
+                        return (ans, Vector2.right * transform.Direction());
+                    }
+
+                    return (ans, Vector2.zero);
+                },
+                value =>
+                {
+                    var color = this.GetModel<TileModel>().GetTileColor(value.Item1.transform);
+                    return color == ColorType.Orange;
+                });
+            
+            purpleSensor = new SensorProperty<RaycastHit2D>(
+                () => Physics2D.Raycast(
+	                transform.position + (Vector3)capsuleCollider.offset, 
+                    Vector2.down,
+                    float.PositiveInfinity,
+                    LayerMask.GetMask("Ground")),
+                value =>
+                {
+                    var color = this.GetModel<TileModel>().GetTileColor(value.transform);
+                    return color == ColorType.Purple;
+                });
 		}
 
 		public void OnTriggerEnter2D( Collider2D col )
@@ -174,6 +239,13 @@ namespace GameMain.Script.Controller.Character.Player
 		
 		#region Public
 
+		public void OnUpdate(float elapse)
+		{
+			edgeSensor.Detect();
+			orangeSensor.Detect();
+			purpleSensor.Detect();
+		}
+		
 		/// <summary>
 		/// attempts to move the character to position + deltaMovement. Any colliders in the way will cause the movement to
 		/// stop when run into.
@@ -190,13 +262,13 @@ namespace GameMain.Script.Controller.Character.Player
 			raycastHitHorizontal.Clear();
 
 			primeRaycastOrigins();
-			
+
 			// now we check movement in the horizontal dir
 			if( deltaMovement.x != 0f )
 			{
 				moveHorizontally(ref deltaMovement);
 			}
-			
+
 			// next, check movement in the vertical dir
 			if( deltaMovement.y != 0f )
 			{
@@ -209,7 +281,9 @@ namespace GameMain.Script.Controller.Character.Player
 
 			// only calculate velocity if we have a non-zero deltaTime
 			if( Time.deltaTime > 0f )
+			{
 				velocity = deltaMovement / Time.deltaTime;
+			}
 
 			// set our becameGrounded state based on the previous and current collision state
 			if( !collisionState.wasGroundedLastFrame && collisionState.below )
@@ -241,7 +315,7 @@ namespace GameMain.Script.Controller.Character.Player
 				move( new Vector3( 0, -1f, 0 ) );
 			} while( !isGrounded );
 		}
-		
+
 		/// <summary>
 		/// this should be called anytime you have to modify the BoxCollider2D at runtime. It will recalculate the distance between the rays used for collision detection.
 		/// It is also used in the skinWidth setter in case it is changed at runtime.
@@ -358,12 +432,23 @@ namespace GameMain.Script.Controller.Character.Player
 						deltaMovement.y += _skinWidth;
 						collisionState.below = true;
 					}
-
+					
 					raycastHitVerticle.Add( _raycastHit );
+					
+					var v = deltaMovement / Time.deltaTime;
+					if (v.y > 16)
+					{
+						Debug.Log($"{deltaMovement.y} {Time.deltaTime}");
+					}
 				}
 			}
 		}
 
 		#endregion
+
+		public IArchitecture GetArchitecture()
+		{
+			return PrimaryColors.Interface;
+		}
 	}
 }

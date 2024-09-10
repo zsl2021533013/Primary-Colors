@@ -118,7 +118,7 @@ namespace GameMain.Scripts.Procedure
 
             if (panel == null)
             {
-                panel = UIKit.OpenPanel<SceneChangePanel>();
+                panel = UIKit.OpenPanel<SceneChangePanel>(UILevel.PopUI);
             }
             panel.FadeOut(() =>
             {
@@ -133,7 +133,7 @@ namespace GameMain.Scripts.Procedure
             if (asyncOperation is not null && asyncOperation.isDone && !isFadingIn)
             {
                 isFadingIn = true;
-                panel.FadeIn();
+                panel.FadeIn(UIKit.ClosePanel<SceneChangePanel>);
                 mFSM.ChangeState(nextState);
             }
         }
@@ -156,8 +156,8 @@ namespace GameMain.Scripts.Procedure
             {
                 ChangeSceneState.nextState = ProcedureStates.Game;
                 
-                ChangeSceneState.nextScenePath = PathManager.GetLevelAsset("1-5");
-                GameState.currentScene = GameState.sceneList.Find(config => config.sceneNumber == "1-5");
+                ChangeSceneState.nextScenePath = PathManager.GetLevelAsset("3-5");
+                GameState.currentScene = GameState.sceneList.Find(config => config.sceneNumber == "3-5");
                 
                 mFSM.ChangeState(ProcedureStates.ChangeScene);
             });
@@ -186,7 +186,7 @@ namespace GameMain.Scripts.Procedure
         {
             base.OnEnter();
 
-            PrimaryColors.Interface.RegisterEvent<StageClearEvent>(NextLevel);
+            PrimaryColors.Interface.RegisterEvent<NextLevelEvent>(NextLevel);
             
             game.Initialize();
         }
@@ -209,12 +209,12 @@ namespace GameMain.Scripts.Procedure
         {
             base.OnExit();
             
-            PrimaryColors.Interface.UnRegisterEvent<StageClearEvent>(NextLevel);
+            PrimaryColors.Interface.UnRegisterEvent<NextLevelEvent>(NextLevel);
             
             game.Shutdown();
         }
 
-        private void NextLevel(StageClearEvent e)
+        private void NextLevel(NextLevelEvent e)
         {
             var currentIndex = sceneList.IndexOf(currentScene);
 

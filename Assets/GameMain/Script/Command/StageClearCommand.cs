@@ -11,6 +11,7 @@ namespace Script.Command
         protected override void OnExecute()
         {
             this.SendEvent<StageClearEvent>();
+            DOVirtual.DelayedCall(1f, this.SendEvent<NextLevelEvent>);
         }
     }
 }

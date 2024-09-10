@@ -1,26 +1,53 @@
-﻿using QFramework;
+﻿using System.Collections.Generic;
+using Cinemachine;
+using GameMain.Script.Controller.Environment_System;
+using QFramework;
 using Script.Architecture;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace GameMain.Script.Controller.Character.Player
 {
-    public partial class PlayerCameraController : MonoBehaviour, IController
+    public class PlayerCameraController : MonoBehaviour
     {
-        private void Awake()
+        [BoxGroup("Follow")] public Transform follow;
+        [BoxGroup("Follow")] public float followDamp;
+        [BoxGroup("Follow")] public Vector2 followOffset;
+        
+        [BoxGroup("Camera")] public CinemachineVirtualCamera vCamera;
+        [BoxGroup("Camera")] public CinemachineConfiner2D confine;
+        
+        [BoxGroup("Target Group")] public List<TargetGroupController> targetGroupList;
+        
+        public void OnAwake()
         {
-            camera.Parent(null);
-            InitConfiner();
-        }
+            follow.Parent(null);
+            vCamera.Parent(null);
+            vCamera.Follow = follow;
 
-        private void InitConfiner()
-        {
+            targetGroupList = new List<TargetGroupController>();
+            targetGroupList.AddRange(FindObjectsOfType<TargetGroupController>());
+            targetGroupList.ForEach(t => t.OnAwake());
+
             var edge = GameObject.Find("Edge").GetComponent<PolygonCollider2D>();
-            confiner.m_BoundingShape2D = edge;
+            confine.m_BoundingShape2D = edge;
         }
 
-        public IArchitecture GetArchitecture()
+        public void OnUpdate(float elapse)
         {
-            return PrimaryColors.Interface;
+            follow.position = Vector3.Lerp(follow.position, transform.position + (Vector3)followOffset, elapse * followDamp);
+
+            vCamera.MoveToTopOfPrioritySubqueue();
+            
+            targetGroupList.ForEach(t =>
+            {
+                if (t.WithinArea(transform.position))
+                {
+                    t.playerFollow = follow;
+                    t.vCamera.MoveToTopOfPrioritySubqueue();
+                    t.OnUpdate(elapse);
+                }
+            });
         }
     }
 }

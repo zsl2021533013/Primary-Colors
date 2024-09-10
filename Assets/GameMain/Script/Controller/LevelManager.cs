@@ -1,12 +1,18 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
+using GameMain.Script.Consts;
+using GameMain.Script.Controller.Environment_System;
 using GameMain.Script.Controller.Interface;
+using GameMain.Script.UI;
 using QFramework;
 using Script.Architecture;
 using Script.Command;
 using Script.Event;
 using Script.Model;
 using UnityEngine;
+using UnityEngine.Serialization;
+using UnityEngine.Tilemaps;
 
 namespace GameMain.Script.Controller
 {
@@ -16,6 +22,13 @@ namespace GameMain.Script.Controller
 
         private List<IPrimaryColorsController> addCache;
         private List<IPrimaryColorsController> removeCache;
+
+        private PlayerStatePanel panel; 
+        
+        /// <summary>
+        /// 黑色与可能变黑的砖块都算
+        /// </summary>
+        public List<TileController>  blackTileList = new List<TileController>(); 
         
         private LevelManager() {}
 
@@ -25,9 +38,14 @@ namespace GameMain.Script.Controller
             addCache = new List<IPrimaryColorsController>();
             removeCache = new List<IPrimaryColorsController>();
             
+            controllers.AddRange(FindObjectsOfType<ControllerBase>());
+            controllers.ForEach(c => c.OnAwake());
+            
+            UIKit.OpenPanel<PlayerStatePanel>().ChangeState(ColorType.White);
+            
             this.SendCommand<SpawnPlayerCommand>();
 
-            DOVirtual.DelayedCall(2f, () =>
+            DOVirtual.DelayedCall(1.5f, () =>
             {
                 this.GetModel<PlayerModel>().Controller.FSM.Trigger(typeof(PlayerBornEvent));
             });
@@ -52,6 +70,7 @@ namespace GameMain.Script.Controller
         public void OnGameShutdown()
         {
             controllers.ForEach(controller => controller.OnGameShutdown());
+            UIKit.ClosePanel<PlayerStatePanel>();
             
             controllers.Clear();
             addCache.Clear();

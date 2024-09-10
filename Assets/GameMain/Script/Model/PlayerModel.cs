@@ -1,10 +1,13 @@
 ﻿using System;
 using DG.Tweening;
 using GameMain.Script.Consts;
+using GameMain.Script.Controller;
 using GameMain.Script.Controller.Character.Player;
+using GameMain.Script.UI;
 using QFramework;
 using QFramework.Example;
 using Script.Architecture;
+using Sirenix.Utilities;
 using UnityEngine;
 
 namespace Script.Model
@@ -30,10 +33,20 @@ namespace Script.Model
                     SpriteRenderer.material
                         .DOColor(value.ColorType2Color(), "_Color", PrimaryColorsAsset.ColorChangeDuration);
                 }
-                if (GameObject)
+
+                LevelManager.Instance.blackTileList.ForEach(c =>
                 {
-                    GameObject.Layer(value == ColorType.Black ? "Player Black" : "Player");
-                }
+                    if (value == ColorType.Black)
+                    {
+                        c.EnableCollision();
+                    }
+                    else
+                    {
+                        c.DisableCollision();
+                    }
+                });
+                
+                UIKit.GetPanel<PlayerStatePanel>().ChangeState(value);
             });
             
             PlayerColor.SetValueWithoutEvent(ColorType.White);

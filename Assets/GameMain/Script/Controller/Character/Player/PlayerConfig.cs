@@ -34,5 +34,6 @@ namespace GameMain.Script.Controller.Character.Player
 
         [Header("Environment")] 
         public float gravity;
+        public float maxVerticalSpeed;
     }
 }
