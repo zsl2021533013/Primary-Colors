@@ -156,8 +156,8 @@ namespace GameMain.Scripts.Procedure
             {
                 ChangeSceneState.nextState = ProcedureStates.Game;
                 
-                ChangeSceneState.nextScenePath = PathManager.GetLevelAsset("2-13");
-                GameState.currentScene = GameState.sceneList.Find(config => config.sceneNumber == "2-13");
+                ChangeSceneState.nextScenePath = PathManager.GetLevelAsset("2-10");
+                GameState.currentScene = GameState.sceneList.Find(config => config.sceneNumber == "2-10");
                 
                 mFSM.ChangeState(ProcedureStates.ChangeScene);
             });

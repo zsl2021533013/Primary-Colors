@@ -22,7 +22,7 @@ MonoBehaviour:
   superJumpHeight: 6
   superJumpTime: 0.05
   bounceUpHeight: 3.8
-  bounceSideHeight: 1
+  bounceSideHeight: 1.2
   orangeBounceUpHeight: 5
   orangeBounceSideHeight: 1
   bounceAngle: 30
