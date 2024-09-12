@@ -229,6 +229,11 @@ namespace GameMain.Script.Controller.Character.Player
 			}
 		}
 
+		public void TriggerOnTriggerEnter(Collider2D col)
+		{
+			onTriggerEnterEvent?.Invoke(col);
+		}
+
 		#endregion
 
 		[System.Diagnostics.Conditional( "DEBUG_CC2D_RAYS" )]

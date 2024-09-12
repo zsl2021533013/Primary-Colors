@@ -80,6 +80,10 @@ namespace GameMain.Script.Controller.Environment_System
                     if (value == ColorType.Black)
                     {
                         LevelManager.Instance.blackTileList.Add(this);
+                        if (this.GetModel<PlayerModel>().PlayerColor.Value != ColorType.Black)
+                        {
+                            DisableCollision();
+                        }
                     }
                     else
                     {

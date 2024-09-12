@@ -22,6 +22,8 @@ namespace GameMain.Script.UI
         protected override void OnClose()
         {
         }
+        
+        
 
         public void ChangeState(ColorType color)
         {

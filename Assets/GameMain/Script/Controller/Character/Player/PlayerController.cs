@@ -616,6 +616,15 @@ namespace GameMain.Script.Controller.Character.Player
 			{
 				this.GetModel<PlayerModel>().PlayerColor.Value = ColorType.White;
 				InputKit.Instance.reset.Reset();
+
+				var contactFilter = new ContactFilter2D();
+				var overlapResults = new Collider2D[10];
+				contactFilter.SetLayerMask(LayerMask.GetMask("Trigger"));
+				contactFilter.useTriggers = true;
+				if (cc2D.capsuleCollider.OverlapCollider(contactFilter, overlapResults) > 0)
+				{
+					cc2D.TriggerOnTriggerEnter(overlapResults[0]);
+				}
 			}
 
 			_velocity = cc2D.velocity;
