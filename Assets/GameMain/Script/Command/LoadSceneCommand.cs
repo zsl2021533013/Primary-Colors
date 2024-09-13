@@ -2,16 +2,17 @@
 using GameMain.Script.Controller.Scene_System;
 using QFramework;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Script.Command
 {
     public class LoadSceneCommand : AbstractCommand
     {
-        public SceneConfig config;
+        [FormerlySerializedAs("config")] public LevelConfigSO configSo;
         
         protected override void OnExecute()
         {
-            SceneKit.Instance.LoadScene(config, this.SendCommand<SpawnPlayerCommand>);
+            SceneKit.Instance.LoadScene(configSo, this.SendCommand<SpawnPlayerCommand>);
         }
     }
 }

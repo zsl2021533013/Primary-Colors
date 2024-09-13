@@ -7,7 +7,7 @@ namespace QFramework.Example
 {
 	public class UITranslationPanelData : UIPanelData
 	{
-		public SceneConfig config;
+		public LevelConfigSO ConfigSo;
 	}
 	
 	public partial class UITransitionPanel : UIPanel

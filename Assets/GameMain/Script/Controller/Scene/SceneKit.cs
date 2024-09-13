@@ -19,14 +19,14 @@ namespace GameMain.Script.Controller.Scene_System
             mResLoader = ResLoader.Allocate();
         }
 
-        public void LoadScene(SceneConfig config, Action onLoadFinish = null)
+        public void LoadScene(LevelConfigSO configSo, Action onLoadFinish = null)
         {
             DOTween.Sequence()
                 .AppendCallback(() => UIKit.OpenPanel<UIExitScenePanel>())
                 .AppendInterval(PrimaryColorsAsset.UIFadeDuration)
                 .AppendCallback(UIKit.ClosePanel<UIExitScenePanel>)
-                .AppendCallback(() => UIKit.OpenPanel<UIEnterScenePanel>(new UIEnterScenePanelData() { config = config }))
-                .AppendCallback(() => mResLoader.LoadSceneSync(config.sceneNumber))
+                .AppendCallback(() => UIKit.OpenPanel<UIEnterScenePanel>(new UIEnterScenePanelData() { ConfigSo = configSo }))
+                .AppendCallback(() => mResLoader.LoadSceneSync(configSo.sceneIndex))
                 .AppendInterval(1f)
                 .AppendCallback(() => onLoadFinish?.Invoke());
         }

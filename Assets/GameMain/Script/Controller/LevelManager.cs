@@ -3,6 +3,7 @@ using System.Linq;
 using DG.Tweening;
 using GameMain.Script.Consts;
 using GameMain.Script.Controller.Environment_System;
+using GameMain.Script.Controller.Input_System;
 using GameMain.Script.Controller.Interface;
 using GameMain.Script.UI;
 using QFramework;
@@ -60,6 +61,25 @@ namespace GameMain.Script.Controller
             removeCache.Clear();
             
             controllers.ForEach(controller => controller.OnUpdate(elapse));
+
+            if (InputKit.Instance.esc)
+            {
+                InputKit.Instance.esc.Reset();
+                if (!UIKit.GetPanel<PausePanel>())
+                {
+                    var panel = UIKit.OpenPanel<PausePanel>();
+                    panel.confirmBtn.onClick.AddListener(() =>
+                    {
+                        this.SendCommand<Return2MenuCommand>();
+                        UIKit.ClosePanel<PausePanel>();
+                    });
+                    panel.cancelBtn.onClick.AddListener(UIKit.ClosePanel<PausePanel>);
+                }
+                else
+                {
+                    UIKit.ClosePanel<PausePanel>();
+                }
+            }
         }
 
         public void OnFixedUpdate(float elapse)

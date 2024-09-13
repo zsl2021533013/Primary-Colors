@@ -33,6 +33,7 @@ namespace GameMain.Script.Controller.Character.Player
 		public StateMachine<Type, Type, Type> FSM { get; private set; }
 
 		private bool isLocked;
+		private bool takeCollectible;
 		private bool isGravityEnable = true;
 		private Vector2 _velocity;
 		
@@ -555,7 +556,7 @@ namespace GameMain.Script.Controller.Character.Player
 			{
 				isLocked = true;
 				FSM.Trigger(typeof(StageClearEvent));
-				this.SendCommand<StageClearCommand>();
+				this.SendCommand(new StageClearCommand() { takeCollectible = takeCollectible });
 				
 				return;
 			}
@@ -565,6 +566,7 @@ namespace GameMain.Script.Controller.Character.Player
 			    col.CompareTag("Floor"))
 			{
 				isLocked = true;
+				takeCollectible = false;
 				this.SendCommand<KillPlayerCommand>();
 				DOVirtual.DelayedCall(1f, () =>
 				{
@@ -579,7 +581,7 @@ namespace GameMain.Script.Controller.Character.Player
 			{
 				var controller = col.GetComponent<CollectibleController>();
 				controller.isFollowing.Value = true;
-				
+				takeCollectible = true;
 				return;
 			}
 		}

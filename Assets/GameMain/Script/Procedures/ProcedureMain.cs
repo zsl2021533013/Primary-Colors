@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using GameMain.Script.Controller.Scene_System;
 using GameMain.Scripts.Game;
 using GameMain.Scripts.UI;
@@ -7,6 +8,7 @@ using GameMain.Scripts.Utility;
 using GameMain.Scripts.Utility.QFramework_Extension;
 using QFramework;
 using Script.Architecture;
+using Script.Command;
 using Script.Event;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -68,18 +70,27 @@ namespace GameMain.Scripts.Procedure
             
             ChangeSceneState.nextState = ProcedureStates.Menu;
             ChangeSceneState.nextScenePath = PathManager.GetSceneAsset("Menu");
-            
-            var savePath = Application.persistentDataPath + "/Save";
-            if (!Directory.Exists(savePath))
+
+            if (!ES3.KeyExists("GameData"))
             {
-                Directory.CreateDirectory(savePath);
+                var gameData = new GameData();
+                Resources.LoadAll<LevelConfigSO>(PathManager.GetDataAsset("Levels")).ForEach(so =>
+                {
+                    gameData.levelList.Add(new LevelConfig(so));
+                });
+                gameData.levelList.Find(l => l.sceneIndex == "1-1").enable = true;
+                ES3.Save("GameData", gameData);
+                GameState.levelList.AddRange(gameData.levelList);
             }
-            
-            GameState.sceneList.AddRange(Resources.LoadAll<SceneConfig>("Data/Scenes"));
-            GameState.sceneList.Sort((a, b) => 
+            else
             {
-                var partsA = a.sceneNumber.Split('-');
-                var partsB = b.sceneNumber.Split('-');
+                GameState.levelList.AddRange(ES3.Load<GameData>("GameData").levelList);
+            }
+
+            GameState.levelList.Sort((a, b) => 
+            {
+                var partsA = a.sceneIndex.Split('-');
+                var partsB = b.sceneIndex.Split('-');
 
                 var firstNumberA = int.Parse(partsA[0]);
                 var secondNumberA = int.Parse(partsA[1]);
@@ -151,16 +162,16 @@ namespace GameMain.Scripts.Procedure
         {
             base.OnEnter();
 
-            panel = UIKit.OpenPanel<MenuPanel>();
-            panel.startGameBtn.onClick.AddListener(() =>
+            panel = UIKit.OpenPanel<MenuPanel>(new MenuPanelData() { levelList = GameState.levelList });
+            panel.levelBtnList.ForEach(lb => lb.onClick.AddListener(() =>
             {
                 ChangeSceneState.nextState = ProcedureStates.Game;
                 
-                ChangeSceneState.nextScenePath = PathManager.GetLevelAsset("3-1");
-                GameState.currentScene = GameState.sceneList.Find(config => config.sceneNumber == "3-1");
+                ChangeSceneState.nextScenePath = PathManager.GetLevelAsset(lb.LevelNumber);
+                GameState.currentLevel = lb.Config;
                 
                 mFSM.ChangeState(ProcedureStates.ChangeScene);
-            });
+            }));
         }
 
         protected override void OnExit()
@@ -175,8 +186,8 @@ namespace GameMain.Scripts.Procedure
     {
         private GameBase game = new PrimaryColorsGame();
         
-        public static SceneConfig currentScene;
-        public static List<SceneConfig> sceneList = new List<SceneConfig>();
+        public static LevelConfig currentLevel;
+        public static List<LevelConfig> levelList = new List<LevelConfig>();
         
         public GameState(FSM<ProcedureStates> fsm, ProcedureMain target) : base(fsm, target)
         {
@@ -187,6 +198,7 @@ namespace GameMain.Scripts.Procedure
             base.OnEnter();
 
             PrimaryColors.Interface.RegisterEvent<NextLevelEvent>(NextLevel);
+            PrimaryColors.Interface.RegisterEvent<Return2MenuEvent>(Return2Menu);
             
             game.Initialize();
         }
@@ -210,20 +222,26 @@ namespace GameMain.Scripts.Procedure
             base.OnExit();
             
             PrimaryColors.Interface.UnRegisterEvent<NextLevelEvent>(NextLevel);
+            PrimaryColors.Interface.UnRegisterEvent<Return2MenuEvent>(Return2Menu);
             
             game.Shutdown();
         }
 
         private void NextLevel(NextLevelEvent e)
         {
-            var currentIndex = sceneList.IndexOf(currentScene);
+            var currentIndex = levelList.IndexOf(currentLevel);
 
             if (currentIndex == -1)
             {
                 return;
             }
+
+            if (e.getCollectibleObjectInThisLevel && currentLevel.hasCollectibleObject)
+            {
+                currentLevel.getCollectibleObject = true;
+            }
                 
-            if (currentIndex == sceneList.Count)
+            if (currentLevel == levelList.Last())
             {
                 ChangeSceneState.nextState = ProcedureStates.Menu;
                 ChangeSceneState.nextScenePath = PathManager.GetSceneAsset("Menu");
@@ -232,14 +250,25 @@ namespace GameMain.Scripts.Procedure
             }
             else
             {
-                var nextScene = sceneList[currentIndex + 1];
+                var nextScene = levelList[currentIndex + 1];
                     
                 ChangeSceneState.nextState = ProcedureStates.Game;
-                ChangeSceneState.nextScenePath = PathManager.GetLevelAsset(nextScene.sceneNumber);
-                currentScene = nextScene;
+                ChangeSceneState.nextScenePath = PathManager.GetLevelAsset(nextScene.sceneIndex);
+                nextScene.enable = true;
+                currentLevel = nextScene;
                 
                 mFSM.ChangeState(ProcedureStates.ChangeScene);
             }
+
+            ES3.Save("GameData", new GameData() { levelList = levelList });
+        }
+
+        private void Return2Menu(Return2MenuEvent e)
+        {
+            ChangeSceneState.nextState = ProcedureStates.Menu;
+            ChangeSceneState.nextScenePath = PathManager.GetSceneAsset("Menu");
+                
+            mFSM.ChangeState(ProcedureStates.ChangeScene);
         }
     }
 }

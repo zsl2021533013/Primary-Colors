@@ -9,7 +9,7 @@ namespace QFramework.Example
 {
 	public class UIEnterScenePanelData : UIPanelData
 	{
-		public SceneConfig config;
+		public LevelConfigSO ConfigSo;
 	}
 	
 	public partial class UIEnterScenePanel : UIPanel
@@ -29,11 +29,11 @@ namespace QFramework.Example
 			image.material.SetFloat("_Slider", 2f);
 			
 			mSequence = DOTween.Sequence()
-				.Append(sceneNumber.DOText(mData.config.sceneNumber, 
-						mData.config.sceneNumber.Length * PrimaryColorsAsset.UICharDuration)
+				.Append(sceneNumber.DOText(mData.ConfigSo.sceneIndex, 
+						mData.ConfigSo.sceneIndex.Length * PrimaryColorsAsset.UICharDuration)
 					.SetEase(Ease.Linear))
-				.Append(sceneTitle.DOText(mData.config.sceneTitle, 
-						mData.config.sceneNumber.Length * PrimaryColorsAsset.UICharDuration)
+				.Append(sceneTitle.DOText(mData.ConfigSo.sceneTitle, 
+						mData.ConfigSo.sceneIndex.Length * PrimaryColorsAsset.UICharDuration)
 					.SetEase(Ease.Linear))
 				.AppendInterval(PrimaryColorsAsset.UISceneEnterTextKeepTime)
 				.Append(canvasGroup.DOFade(0f, PrimaryColorsAsset.UISceneEnterTextFadeDuration))

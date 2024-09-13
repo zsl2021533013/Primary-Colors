@@ -105,7 +105,7 @@ TextureImporter:
         width: 48
         height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 8, y: 8, z: 8, w: 8}
       outline: []
       physicsShape: []
@@ -121,13 +121,13 @@ TextureImporter:
       name: UI_1
       rect:
         serializedVersion: 2
-        x: 0
-        y: 48
+        x: 48
+        y: 96
         width: 48
         height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0, y: 0}
+      border: {x: 15, y: 15, z: 15, w: 15}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -142,13 +142,13 @@ TextureImporter:
       name: UI_2
       rect:
         serializedVersion: 2
-        x: 48
-        y: 48
+        x: 96
+        y: 96
         width: 48
         height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0, y: 0}
+      border: {x: 6, y: 5, z: 6, w: 5}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -163,12 +163,12 @@ TextureImporter:
       name: UI_3
       rect:
         serializedVersion: 2
-        x: 96
+        x: 0
         y: 48
         width: 48
         height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -184,12 +184,12 @@ TextureImporter:
       name: UI_4
       rect:
         serializedVersion: 2
-        x: 144
+        x: 48
         y: 48
         width: 48
         height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -205,12 +205,12 @@ TextureImporter:
       name: UI_5
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
+        x: 96
+        y: 48
         width: 48
         height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -218,6 +218,69 @@ TextureImporter:
       bones: []
       spriteID: 447298b965cfaba419b52e3ec58995a8
       internalID: -1754655245
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_6
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 48
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3405e739e6cf6c54fadecf810f5520ee
+      internalID: -34611742
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_7
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d69d628038b5c7b44a71b7313a5bb75c
+      internalID: 1481680077
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_8
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 96
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 6, y: 5, z: 6, w: 5}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 89640da15a1276644942d905e783828d
+      internalID: 843714935
       vertices: []
       indices: 
       edges: []
@@ -239,6 +302,9 @@ TextureImporter:
       UI_3: -2037168030
       UI_4: 1591119686
       UI_5: -1754655245
+      UI_6: -34611742
+      UI_7: 1481680077
+      UI_8: 843714935
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
