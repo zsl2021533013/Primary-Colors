@@ -103,7 +103,6 @@ namespace GameMain.Script.Controller.Character.Player
 
 		public Vector3 velocity { get; private set; }
 		public bool isGrounded { get { return collisionState.below; } }
-		public bool isWall => transform.Direction() == -1 ? collisionState.left : collisionState.right;
 		
 		#endregion
 
@@ -128,8 +127,12 @@ namespace GameMain.Script.Controller.Character.Player
 		float _verticalDistanceBetweenRays;
 		float _horizontalDistanceBetweenRays;
 		
+		public Transform groundSensorTransform;
+		public Transform wallSensorTransform;
 		public Transform edgeSensorTransform;
 		
+		public SensorProperty<Collider2D> groundSensor;
+		public SensorProperty<Collider2D> wallSensor;
 		public SensorProperty<Collider2D> edgeSensor;
         
 		public SensorProperty<(RaycastHit2D, Vector2)> orangeSensor;
@@ -151,6 +154,22 @@ namespace GameMain.Script.Controller.Character.Player
 					Physics2D.IgnoreLayerCollision(gameObject.layer, i);
 				}
 			}
+			
+			groundSensor = new SensorProperty<Collider2D>(
+				() => Physics2D.OverlapBox(
+					groundSensorTransform.position, 
+					groundSensorTransform.localScale,
+					0f,
+					LayerMask.GetMask("Ground")),
+				value => value != null);
+			
+			wallSensor = new SensorProperty<Collider2D>(
+				() => Physics2D.OverlapBox(
+					wallSensorTransform.position, 
+					wallSensorTransform.localScale,
+					0f,
+					LayerMask.GetMask("Ground")),
+				value => value != null);
 			
 			edgeSensor = new SensorProperty<Collider2D>(
                 () => Physics2D.OverlapBox(
@@ -246,6 +265,8 @@ namespace GameMain.Script.Controller.Character.Player
 
 		public void OnUpdate(float elapse)
 		{
+			groundSensor.Detect();
+			wallSensor.Detect();
 			edgeSensor.Detect();
 			orangeSensor.Detect();
 			purpleSensor.Detect();
@@ -405,7 +426,7 @@ namespace GameMain.Script.Controller.Character.Player
 		void moveVertically( ref Vector3 deltaMovement )
 		{
 			var isGoingUp = deltaMovement.y > 0;
-			var rayDistance = Mathf.Abs( deltaMovement.y ) + _skinWidth;
+			var rayDistance = Mathf.Abs( deltaMovement.y ) + _skinWidth; 
 			var rayDirection = isGoingUp ? Vector2.up : -Vector2.up;
 			var initialRayOrigin = isGoingUp ? _raycastOrigins.topLeft : _raycastOrigins.bottomLeft;
 
@@ -439,12 +460,6 @@ namespace GameMain.Script.Controller.Character.Player
 					}
 					
 					raycastHitVerticle.Add( _raycastHit );
-					
-					var v = deltaMovement / Time.deltaTime;
-					if (v.y > 16)
-					{
-						Debug.Log($"{deltaMovement.y} {Time.deltaTime}");
-					}
 				}
 			}
 		}

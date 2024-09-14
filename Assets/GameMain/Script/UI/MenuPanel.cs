@@ -19,6 +19,7 @@ namespace GameMain.Scripts.UI
     {
         public Transform content;
         public TMP_Text collectibleObjectCount;
+        public Button exitBtn;
         [HideInInspector] public List<LevelButton> levelBtnList;
         
         protected override void OnClose()
@@ -35,7 +36,10 @@ namespace GameMain.Scripts.UI
                 data.levelList.Where(l => l.hasCollectibleObject && l.getCollectibleObject).ToList().Count;
             var hasCollectibleObject =
                 data.levelList.Where(l => l.hasCollectibleObject).ToList().Count;
-            collectibleObjectCount.text = $"{getCollectibleObject}/{hasCollectibleObject}";
+            collectibleObjectCount.text =
+                getCollectibleObject == hasCollectibleObject ? "Perfect!" : $"{getCollectibleObject}/{hasCollectibleObject}";
+            
+            exitBtn.onClick.AddListener(Application.Quit);
 
             levelBtnList = new List<LevelButton>();
             

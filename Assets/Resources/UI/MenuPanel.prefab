@@ -309,10 +309,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 3289478021136821441}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 50}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4752108540133219376
 CanvasRenderer:
@@ -1037,6 +1037,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   content: {fileID: 154929731767354659}
   collectibleObjectCount: {fileID: 6516343026178031206}
+  exitBtn: {fileID: 4783315678907711012}
   levelBtnList: []
 --- !u!1 &5308479466389343008
 GameObject:
@@ -1276,7 +1277,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -250, y: -250}
-  m_SizeDelta: {x: 200, y: 100}
+  m_SizeDelta: {x: 260, y: 100}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &9184649171301275280
 CanvasRenderer:

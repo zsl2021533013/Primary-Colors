@@ -115,7 +115,7 @@ namespace GameMain.Script.Controller.Character.Player
 					var inputX = InputKit.Instance.move.Value.x;
 					inputX = inputX == 0 ? 0 : inputX > 0 ? 1 : -1;
 					
-					var smoothedMovementFactor = cc2D.isGrounded ? config.groundDamping : config.airDamping;
+					var smoothedMovementFactor = cc2D.groundSensor ? config.groundDamping : config.airDamping;
 					_velocity.x = Mathf.Lerp( _velocity.x, inputX * config.maxSpeed, Time.deltaTime * smoothedMovementFactor );
 					
 					if (inputX != 0)
@@ -209,7 +209,7 @@ namespace GameMain.Script.Controller.Character.Player
 					var inputX = InputKit.Instance.move.Value.x;
 					inputX = inputX == 0 ? 0 : inputX > 0 ? 1 : -1;
 					
-					var smoothedMovementFactor = cc2D.isGrounded ? config.groundDamping : config.airDamping;
+					var smoothedMovementFactor = cc2D.groundSensor ? config.groundDamping : config.airDamping;
 					_velocity.x = Mathf.Lerp( _velocity.x, inputX * config.maxSpeed, Time.deltaTime * smoothedMovementFactor );
 					
 					if (inputX != 0)
@@ -319,7 +319,7 @@ namespace GameMain.Script.Controller.Character.Player
 					var inputX = InputKit.Instance.move.Value.x;
 					inputX = inputX == 0 ? 0 : inputX > 0 ? 1 : -1;
 					
-					var smoothedMovementFactor = cc2D.isGrounded ? config.groundDamping : config.airDamping;
+					var smoothedMovementFactor = cc2D.groundSensor ? config.groundDamping : config.airDamping;
 					_velocity.x = Mathf.Lerp( _velocity.x, inputX * config.maxSpeed, Time.deltaTime * smoothedMovementFactor );
 					
 					if (inputX != 0)
@@ -338,7 +338,7 @@ namespace GameMain.Script.Controller.Character.Player
 					var inputX = InputKit.Instance.move.Value.x;
 					inputX = inputX == 0 ? 0 : inputX > 0 ? 1 : -1;
 					
-					var smoothedMovementFactor = cc2D.isGrounded ? config.groundDamping : config.airDamping;
+					var smoothedMovementFactor = cc2D.groundSensor ? config.groundDamping : config.airDamping;
 					_velocity.x = Mathf.Lerp( _velocity.x, inputX * config.maxSpeed, Time.deltaTime * smoothedMovementFactor );
 					
 					var newSpeedY = _velocity.y;
@@ -385,10 +385,16 @@ namespace GameMain.Script.Controller.Character.Player
 				"Wall",
 				onEnter: state =>
 				{
+					var raycastHit = Physics2D.Raycast(
+						transform.position, 
+						transform.Direction() * Vector2.right, 
+						1f,
+						LayerMask.GetMask("Ground"));
+					
 					isGravityEnable = false;
 					_velocity = Vector2.zero;
 					transform.position =
-						cc2D.raycastHitHorizontal[0].point + 
+						raycastHit.point + 
 						transform.Direction() * -cc2D.capsuleCollider.offset +
 						transform.Direction() * cc2D.capsuleCollider.bounds.extents.x * Vector2.left;
 				},
@@ -444,7 +450,7 @@ namespace GameMain.Script.Controller.Character.Player
 				(transition => true);
 			
 			FSM.AddTransition<PlayerMoveState, PlayerCoyoteState>
-			(transition => !cc2D.isGrounded);
+			(transition => !cc2D.groundSensor);
 			
 			FSM.AddTransition<PlayerMoveState, PlayerJumpSelectState> 
 				(transition => InputKit.Instance.jump);
@@ -471,7 +477,7 @@ namespace GameMain.Script.Controller.Character.Player
 				(transition => cc2D.orangeSensor);
 			
 			FSM.AddTransition<PlayerAirSubFSM, PlayerMoveState> 
-				(transition => cc2D.isGrounded,
+				(transition => cc2D.groundSensor,
 				successAction: () =>
 				{
 					this.SendCommand(new SpawnParticleCommand
@@ -480,20 +486,13 @@ namespace GameMain.Script.Controller.Character.Player
 						pos = transform.position
 					});
 					
-					/*this.SendCommand(new SpawnParticleCommand
+					if (cc2D.groundSensor)
 					{
-						type = ParticleType.Land, 
-						pos = transform.position
-					});*/
-					
-					if (cc2D.isGrounded)
-					{
-						var tile = cc2D.raycastHitVerticle[0].transform;
+						var tile = cc2D.groundSensor.Value.transform;
 						
 						if (this.GetModel<TileModel>().GetTileType(tile) == TileType.Touchable)
 						{
-							var color = this.GetModel<TileModel>()
-								.GetTileColor(cc2D.raycastHitVerticle[0].transform);
+							var color = this.GetModel<TileModel>().GetTileColor(tile);
 							this.SendCommand(new TouchColorCommand { color = color });
 						}
 
@@ -507,15 +506,15 @@ namespace GameMain.Script.Controller.Character.Player
 			FSM.AddTransition<PlayerAirSubFSM, PlayerWallState>
 			(transition =>
 			{
-				return cc2D.isWall &&
+				return cc2D.wallSensor &&
 				       cc2D.edgeSensor &&
-				       !cc2D.isGrounded &&
+				       !cc2D.groundSensor &&
 				       (this.GetModel<PlayerModel>().PlayerColor.Value == ColorType.Green || 
-				        this.GetModel<TileModel>().GetTileColor(cc2D.raycastHitHorizontal[0].transform) == ColorType.Green);
+				        this.GetModel<TileModel>().GetTileColor(cc2D.wallSensor.Value.transform) == ColorType.Green);
 			});
 
 			FSM.AddTransition<PlayerWallState, PlayerAirSubFSM>
-				(transition => !cc2D.isGrounded && !cc2D.isWall);
+				(transition => !cc2D.groundSensor && !cc2D.wallSensor);
 			
 			FSM.AddTransition<PlayerWallState, PlayerWallJumpState>
 				(transition => InputKit.Instance.jump || transform.IsOppositeDirection(InputKit.Instance.move.Value.x));
@@ -529,7 +528,7 @@ namespace GameMain.Script.Controller.Character.Player
 			});
 
 			FSM.AddTransition<PlayerShakeState, PlayerAirSubFSM>
-				(transition => !cc2D.isGrounded, true);
+				(transition => !cc2D.groundSensor, true);
 			
 			FSM.AddTransition<PlayerShakeState, PlayerMoveState>
 				(transition => true);

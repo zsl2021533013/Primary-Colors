@@ -24,7 +24,7 @@ namespace GameMain.Script.Controller.Environment_System
     {
         public Tilemap tilemap;
         public TilemapRenderer tilemapRenderer;
-        public CompositeCollider2D collider;
+        [FormerlySerializedAs("collider")] public CompositeCollider2D compositeCollider;
         
         [SerializeField] private ColorType color;
         [SerializeField] private TileType tileType;
@@ -207,12 +207,12 @@ namespace GameMain.Script.Controller.Environment_System
         
         public void EnableCollision()
         {
-            collider.enabled = true;
+            compositeCollider.enabled = true;
         }
 
         public void DisableCollision()
         {
-            collider.enabled = false;
+            compositeCollider.enabled = false;
         }
     }
 }
